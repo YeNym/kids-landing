@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ДикоУмные прогулки — Хранители Планеты | Санкт-Петербург</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest: #2D5A3D;
+  --forest-deep: #1A3A2A;
+  --forest-light: #4A8C5E;
+  --sand: #E8D5B7;
+  --sand-light: #F5EDE0;
+  --terracotta: #C4724E;
+  --terracotta-light: #E8956F;
+  --warm-white: #FAF7F2;
+  --warm-gray: #8B8178;
+  --dark: #1A1510;
+  --gold: #C9A96E;
+  --gold-light: #E8D5A0;
+  --moss: #6B8E5A;
+  --sky: #7BA7BC;
+  --shadow: rgba(26, 21, 16, 0.08);
+  --shadow-lg: rgba(26, 21, 16, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'Inter', -apple-system, sans-serif; color: var(--dark); background: var(--warm-white); overflow-x: hidden; line-height: 1.6; }
+
+/* ===== PRELOADER ===== */
+.preloader { position: fixed; inset: 0; background: var(--forest-deep); z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease, visibility 0.6s ease; }
+.preloader.hidden { opacity: 0; visibility: hidden; }
+.preloader-logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 2rem; }
+.preloader-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+.preloader-bar-inner { height: 100%; background: var(--gold); border-radius: 2px; animation: preload 1.5s ease-in-out; }
+@keyframes preload { 0% { width: 0; } 100% { width: 100%; } }
+
+/* ===== NAVIGATION ===== */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; transition: all 0.4s ease; background: transparent; }
+.nav.scrolled { background: rgba(250, 247, 242, 0.98); backdrop-filter: blur(20px); box-shadow: 0 2px 30px var(--shadow); padding: 0.7rem 2rem; }
+.nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: white; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+.nav.scrolled .nav-logo { color: var(--forest-deep); }
+.nav-logo svg { width: 28px; height: 28px; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em; transition: color 0.3s; position: relative; }
+.nav.scrolled .nav-links a { color: var(--dark); }
+.nav-links a:hover { color: var(--gold); }
+.nav-cta { background: var(--terracotta); color: white !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(196,114,78,0.3); }
+.nav-cta:hover { background: #a85a3a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,114,78,0.4); }
+.nav-mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+.nav-mobile-toggle span { display: block; width: 24px; height: 2px; background: white; margin: 5px 0; transition: all 0.3s ease; }
+.nav.scrolled .nav-mobile-toggle span { background: var(--dark); }
+@media (max-width: 768px) { .nav-links { display: none; } .nav-mobile-toggle { display: block; } }
+
+/* ===== HERO WITH VIDEO ===== */
+.hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; background: var(--forest-deep); }
+.hero-video-container { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+.hero-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+.hero-bg-fallback { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(45,90,61,0.9) 0%, rgba(26,58,42,0.85) 100%); z-index: 1; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26, 58, 42, 0.88) 0%, rgba(45, 90, 61, 0.82) 50%, rgba(26, 58, 42, 0.75) 100%); z-index: 2; }
+.hero-particles { position: absolute; inset: 0; z-index: 3; overflow: hidden; pointer-events: none; }
+.particle { position: absolute; border-radius: 50%; background: rgba(201, 169, 110, 0.2); animation: float-particle linear infinite; }
+@keyframes float-particle { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
+.hero-content { position: relative; z-index: 4; max-width: 1400px; margin: 0 auto; padding: 1rem 2rem 5rem; width: 100%; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center; }
+.hero-text { animation: fadeInUp 1s ease 0.5s both; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(201, 169, 110, 0.2); border: 2px solid rgba(201, 169, 110, 0.4); padding: 0.6rem 1.4rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--gold); margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.hero-badge-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; animation: pulse-dot 2s ease infinite; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; color: white; line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+.hero h1 span { color: var(--gold); position: relative; display: inline-block; }
+.hero h1 span::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 4px; background: var(--gold); opacity: 0.4; border-radius: 2px; }
+.hero-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 2.5rem; max-width: 600px; font-weight: 400; }
+.hero-buttons { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--gold); color: var(--dark) !important; padding: 1.2rem 2.4rem; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; border: 2px solid var(--gold); letter-spacing: 0.02em; box-shadow: 0 6px 20px rgba(201,169,110,0.3); }
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(201,169,110,0.4); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: white !important; padding: 1.2rem 2.4rem; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease; cursor: pointer; backdrop-filter: blur(10px); }
+.btn-secondary:hover { border-color: var(--gold); color: var(--gold) !important; background: rgba(201, 169, 110, 0.1); transform: translateY(-3px); }
+.hero-visual { position: relative; animation: fadeInUp 1s ease 0.8s both; }
+.hero-image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.hero-img { border-radius: 20px; overflow: hidden; position: relative; aspect-ratio: 3/4; box-shadow: 0 25px 60px rgba(0,0,0,0.35); }
+.hero-img:nth-child(2) { margin-top: 2.5rem; }
+.hero-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.hero-img:hover img { transform: scale(1.08); }
+.hero-img-label { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; background: rgba(26, 58, 42, 0.92); backdrop-filter: blur(10px); padding: 0.8rem 1.2rem; border-radius: 12px; color: white; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; text-align: center; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+
+/* ===== SECTION COMMON ===== */
+section { padding: 7rem 2rem; }
+.section-container { max-width: 1200px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 4.5rem; }
+.section-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--forest-light); margin-bottom: 1.2rem; }
+.section-tag-line { width: 40px; height: 3px; background: var(--forest-light); border-radius: 2px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 1.2rem; }
+.section-title span { color: var(--forest); }
+.section-subtitle { font-size: 1.1rem; color: var(--warm-gray); max-width: 650px; margin: 0 auto; line-height: 1.7; font-weight: 400; }
+
+/* ===== MODULAR BLOCK ===== */
+.modular-section { background: var(--sand-light); position: relative; overflow: hidden; }
+.modular-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(45,90,61,0.06) 0%, transparent 70%); border-radius: 50%; }
+.modular-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.8rem; }
+.modular-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); cursor: default; }
+.modular-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px var(--shadow-lg); border-color: rgba(45,90,61,0.1); }
+.modular-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; border-radius: 24px 24px 0 0; }
+.modular-card:nth-child(1)::before { background: var(--forest); }
+.modular-card:nth-child(2)::before { background: var(--terracotta); }
+.modular-card:nth-child(3)::before { background: var(--sky); }
+.modular-card:nth-child(4)::before { background: var(--gold); }
+.modular-card:nth-child(5)::before { background: var(--moss); }
+.modular-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; }
+.modular-card:nth-child(1) .modular-icon { background: rgba(45,90,61,0.12); }
+.modular-card:nth-child(2) .modular-icon { background: rgba(196,114,78,0.12); }
+.modular-card:nth-child(3) .modular-icon { background: rgba(123,167,188,0.12); }
+.modular-card:nth-child(4) .modular-icon { background: rgba(201,169,110,0.12); }
+.modular-card:nth-child(5) .modular-icon { background: rgba(107,142,90,0.12); }
+.modular-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--dark); }
+.modular-card p { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
+.modular-stud { position: absolute; top: -8px; right: 16px; display: flex; gap: 8px; }
+.modular-stud span { width: 12px; height: 12px; border-radius: 50%; opacity: 0.15; }
+.modular-card:nth-child(1) .modular-stud span { background: var(--forest); }
+.modular-card:nth-child(2) .modular-stud span { background: var(--terracotta); }
+.modular-card:nth-child(3) .modular-stud span { background: var(--sky); }
+.modular-card:nth-child(4) .modular-stud span { background: var(--gold); }
+.modular-card:nth-child(5) .modular-stud span { background: var(--moss); }
+
+/* ===== STATS ===== */
+.stats-section { background: var(--forest-deep); position: relative; overflow: hidden; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; position: relative; z-index: 1; }
+.stat-item { text-align: center;
+  /*padding: 2.5rem;*/
+  position: relative; }
+.stat-item:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px; background: rgba(255,255,255,0.12); }
+.stat-number { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 0.6rem; }
+.stat-label { font-size: 0.95rem; color: rgba(255,255,255,0.7); font-weight: 500; letter-spacing: 0.02em; }
+
+/* ===== SMALL GROUP SECTION ===== */
+/*.small-group-section { background: var(--warm-white); }*/
+/*.small-group-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }*/
+/*.small-group-image { position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 35px 70px var(--shadow-lg); }*/
+/*.small-group-image img { width: 100%; height: 100%; object-fit: cover; }*/
+/*.small-group-image-badge { position: absolute; bottom: 2rem; left: 2rem; background: rgba(250,247,242,0.98); backdrop-filter: blur(10px); padding: 1rem 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 0.8rem; border: 2px solid rgba(45,90,61,0.1); }*/
+/*.small-group-image-badge-icon { width: 44px; height: 44px; background: var(--forest); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }*/
+/*.small-group-image-badge-text { font-size: 0.85rem; color: var(--warm-gray); }*/
+/*.small-group-image-badge-text strong { display: block; color: var(--dark); font-size: 1.05rem; font-weight: 700; }*/
+/*.small-group-points { list-style: none; display: grid; gap: 1.2rem; }*/
+/*.small-group-points li { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.2rem; background: white; border-radius: 16px; transition: all 0.3s ease; border: 2px solid transparent; }*/
+/*.small-group-points li:hover { border-color: rgba(45,90,61,0.15); box-shadow: 0 10px 30px var(--shadow); transform: translateX(6px); }*/
+/*.small-group-points li .icon { width: 42px; height: 42px; min-width: 42px; background: rgba(45,90,61,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--forest); font-size: 1.1rem; margin-top: 3px; }*/
+/*.small-group-points li h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--dark); }*/
+/*.small-group-points li p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.5; }*/
+.small-group-section {
+  background: var(--warm-white);
+  padding: 5rem 2rem;
+}
+
+.small-group-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* IMAGE */
+
+.small-group-image {
+  position: sticky;
+  top: 120px;
+
+  border-radius: 24px;
+  overflow: hidden;
+  /*aspect-ratio: 4/5;*/
+height: 100%;
+  box-shadow: 0 25px 60px var(--shadow-lg);
+}
+
+.small-group-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.small-group-image-badge {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+
+  background: rgba(250,247,242,0.96);
+  backdrop-filter: blur(10px);
+
+  border-radius: 14px;
+
+  padding: 0.9rem 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.small-group-image-badge-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+
+  background: var(--forest);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-size: 1.1rem;
+}
+
+.small-group-image-badge-text {
+  font-size: 0.78rem;
+  color: var(--warm-gray);
+  line-height: 1.3;
+}
+
+.small-group-image-badge-text strong {
+  display: block;
+  color: var(--dark);
+  font-size: 0.95rem;
+}
+
+/* GRID */
+
+.small-group-points {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+}
+
+/* CARD */
+
+.small-group-points li {
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 1rem;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+
+  border: 1px solid rgba(0,0,0,0.05);
+
+  transition: all 0.3s ease;
+
+  min-height: 120px;
+}
+
+.small-group-points li:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(45,90,61,0.15);
+
+  box-shadow: 0 15px 35px var(--shadow);
+}
+
+/* ICON */
+
+.small-group-points li .icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+
+  border-radius: 12px;
+
+  background: rgba(45,90,61,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1rem;
+}
+
+/* TEXT */
+
+.small-group-points li h4 {
+  font-size: 0.9rem;
+  line-height: 1.3;
+
+  margin-bottom: 0.3rem;
+
+  font-weight: 700;
+
+  color: var(--dark);
+}
+
+.small-group-points li p {
+  font-size: 0.78rem;
+  line-height: 1.45;
+
+  color: var(--warm-gray);
+}
+
+
+
+/* ===== 7 DIRECTIONS ===== */
+.directions-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); position: relative; }
+.directions-map { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.2rem; margin-bottom: 3.5rem; }
+.direction-card { background: white; border-radius: 24px; padding: 2.5rem 1.5rem; text-align: center; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid transparent; cursor: default; }
+.direction-card:hover { transform: translateY(-12px); box-shadow: 0 25px 60px var(--shadow-lg); }
+.direction-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; transition: height 0.3s ease; }
+.direction-card:hover::after { height: 7px; }
+.direction-card:nth-child(1) { --dir-color: #2D5A3D; }
+.direction-card:nth-child(2) { --dir-color: #C4724E; }
+.direction-card:nth-child(3) { --dir-color: #7BA7BC; }
+.direction-card:nth-child(4) { --dir-color: #C9A96E; }
+.direction-card:nth-child(5) { --dir-color: #6B8E5A; }
+.direction-card:nth-child(6) { --dir-color: #8B6F47; }
+.direction-card:nth-child(7) { --dir-color: #5C4033; }
+.direction-card::after { background: var(--dir-color); }
+.direction-card:hover { border-color: var(--dir-color); }
+.direction-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--dir-color); opacity: 0.15; position: absolute; top: 0.8rem; right: 1rem; line-height: 1; }
+.direction-icon { width: 72px; height: 72px; border-radius: 20px; background: rgba(45,90,61,0.08); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 2rem; }
+.direction-card:nth-child(1) .direction-icon { background: rgba(45,90,61,0.12); }
+.direction-card:nth-child(2) .direction-icon { background: rgba(196,114,78,0.12); }
+.direction-card:nth-child(3) .direction-icon { background: rgba(123,167,188,0.12); }
+.direction-card:nth-child(4) .direction-icon { background: rgba(201,169,110,0.12); }
+.direction-card:nth-child(5) .direction-icon { background: rgba(107,142,90,0.12); }
+.direction-card:nth-child(6) .direction-icon { background: rgba(139,111,71,0.12); }
+.direction-card:nth-child(7) .direction-icon { background: rgba(92,64,51,0.12); }
+.direction-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
+.direction-card p { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.5; }
+.directions-note { text-align: center; max-width: 750px; margin: 0 auto; padding: 2rem 2.5rem; background: white; border-radius: 20px; border-left: 5px solid var(--forest); font-size: 0.95rem; color: var(--warm-gray); line-height: 1.7; box-shadow: 0 6px 25px var(--shadow); }
+
+/* ===== CHILD PATH ===== */
+/* ===== CHILD PATH COMPACT ===== */
+.path-section {
+  background: var(--forest-deep);
+  position: relative;
+  overflow: hidden;
+  padding: 5rem 2rem;
+}
+
+.path-section .section-tag {
+  color: var(--gold);
+}
+
+.path-section .section-tag-line {
+  background: var(--gold);
+}
+
+.path-section .section-title {
+  color: white;
+}
+
+.path-section .section-title span {
+  color: var(--gold);
+}
+
+.path-section .section-subtitle {
+  color: rgba(255,255,255,0.65);
+}
+
+/* TIMELINE */
+.path-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 3rem;
+}
+
+/* CARD */
+.path-step {
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 1.2rem;
+  transition: all 0.35s ease;
+  height: 190px;
+
+}
+
+.path-step:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(201,169,110,0.3);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
+
+/* ICON */
+.path-step-dot {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(201,169,110,0.12);
+  border: 1px solid rgba(201,169,110,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.path-step:hover .path-step-dot {
+  background: var(--gold);
+  color: var(--dark);
+  transform: scale(1.05);
+}
+
+/* TITLE */
+.path-step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+}
+
+/* TEXT */
+.path-step-desc {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.58);
+  line-height: 1.45;
+}
+
+
+/* ===== MENTOR ===== */
+
+.mentor-section{
+  background:var(--warm-white);
+  padding:5rem 2rem;
+}
+
+.mentor-card{
+  display:grid;
+  grid-template-columns: 340px 1fr;
+
+  gap:2.5rem;
+
+  align-items:center;
+
+  background:white;
+
+  border-radius:28px;
+
+  padding:2rem;
+
+  border:1px solid rgba(0,0,0,.05);
+
+  box-shadow:0 20px 50px var(--shadow);
+}
+
+/* PHOTO */
+
+.mentor-photo{
+  border-radius:22px;
+
+  overflow:hidden;
+
+  aspect-ratio:4/5;
+}
+
+.mentor-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* CONTENT */
+
+.mentor-label{
+  display:inline-flex;
+
+  padding:.45rem .9rem;
+
+  border-radius:999px;
+
+  background:rgba(45,90,61,.08);
+
+  color:var(--forest);
+
+  font-size:.75rem;
+  font-weight:700;
+
+  margin-bottom:1rem;
+}
+
+.mentor-name{
+  font-family:'Playfair Display', serif;
+
+  font-size:2rem;
+  line-height:1.1;
+
+  margin-bottom:1.5rem;
+
+  color:var(--dark);
+}
+
+/* INFO GRID */
+
+.mentor-grid{
+  display:grid;
+
+  grid-template-columns:repeat(2,1fr);
+
+  gap:1rem;
+
+  margin-bottom:1.5rem;
+}
+
+.mentor-item{
+  background:var(--sand-light);
+
+  border-radius:18px;
+
+  padding:1rem;
+}
+
+.mentor-item span{
+  display:block;
+
+  font-size:.72rem;
+  font-weight:700;
+
+  text-transform:uppercase;
+  letter-spacing:.08em;
+
+  color:var(--forest);
+
+  margin-bottom:.5rem;
+}
+
+.mentor-item p{
+  font-size:.92rem;
+  line-height:1.5;
+
+  color:var(--dark);
+}
+
+.mentor-description{
+  font-size:.95rem;
+
+  line-height:1.7;
+
+  color:var(--warm-gray);
+
+  max-width:700px;
+}
+
+/* TABLET */
+
+@media(max-width:900px){
+
+  .mentor-card{
+    grid-template-columns:1fr;
+
+    padding:1.5rem;
+  }
+
+  .mentor-photo{
+    max-width:420px;
+    margin:0 auto;
+  }
+
+}
+
+/* MOBILE */
+
+@media(max-width:640px){
+
+  .mentor-section{
+    padding:4rem 1.2rem;
+  }
+
+  .mentor-card{
+    gap:1.3rem;
+
+    border-radius:22px;
+
+    padding:1rem;
+  }
+
+  .mentor-name{
+    font-size:1.5rem;
+
+    margin-bottom:1rem;
+  }
+
+  .mentor-grid{
+    grid-template-columns:1fr;
+
+    gap:.7rem;
+  }
+
+  .mentor-item{
+    border-radius:14px;
+
+    padding:.85rem;
+  }
+
+  .mentor-item p{
+    font-size:.8rem;
+  }
+
+  .mentor-description{
+    font-size:.78rem;
+    line-height:1.5;
+  }
+
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+
+  .small-group-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .small-group-image {
+    position: relative;
+    top: auto;
+
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
+
+@media (max-width: 640px) {
+
+  .small-group-section {
+    padding: 4rem 1.2rem;
+  }
+
+  .small-group-grid {
+    gap: 1.5rem;
+  }
+
+  .small-group-points {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .small-group-points li {
+    min-height: 105px;
+
+    padding: 0.8rem;
+
+    border-radius: 14px;
+
+    gap: 0.6rem;
+  }
+
+  .small-group-points li .icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+
+    font-size: 0.9rem;
+
+    border-radius: 10px;
+  }
+
+  .small-group-points li h4 {
+    font-size: 0.9rem;
+    line-height: 1.25;
+
+    margin-bottom: 0.2rem;
+  }
+
+  .small-group-points li p {
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  .small-group-image-badge {
+    padding: 0.8rem;
+  }
+}
+
+/* DESKTOP COMPACT */
+@media (max-width: 1100px) {
+  .path-timeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+
+  /* скрываем линию только на мобилке */
+  .path-timeline::before {
+    display: none;
+  }
+
+  .path-timeline {
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+
+  .path-step {
+    min-height: auto;
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .path-step-dot {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+    border-radius: 12px;
+  }
+
+  .path-step-title {
+    font-size: 0.85rem;
+    line-height: 1.25;
+  }
+
+  .path-step-desc {
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+}
+/*.path-timeline { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 0; padding: 4rem 0; overflow-x: auto; scrollbar-width: none; }*/
+.path-timeline::-webkit-scrollbar { display: none; }
+/*.path-timeline::before { content: ''; position: absolute; top: 5.5rem; left: 5%; right: 5%; height: 4px; background: linear-gradient(90deg, var(--gold), var(--forest-light), var(--terracotta), var(--gold)); border-radius: 2px; z-index: 1; }*/
+.path-step { flex: 1; text-align: center; position: relative; z-index: 2; min-width: 130px; }
+.path-step-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--forest-deep); border: 3px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 1.3rem; transition: all 0.4s ease; position: relative; }
+.path-step:hover .path-step-dot { background: var(--gold); transform: scale(1.2); box-shadow: 0 0 35px rgba(201,169,110,0.5); }
+.path-step-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.4rem; }
+.path-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.4; max-width: 150px; margin: 0 auto; }
+
+/* ===== 7 STAGES ===== */
+.stages-section { background: var(--warm-white); }
+.stages-timeline { position: relative; max-width: 850px; margin: 0 auto; }
+.stages-timeline::before { content: ''; position: absolute; left: 32px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--forest-light), var(--gold), var(--terracotta)); border-radius: 2px; }
+.stage-item { display: flex; gap: 2.5rem; margin-bottom: 2.5rem; position: relative; padding-left: 0; }
+.stage-number { width: 64px; height: 64px; min-width: 64px; border-radius: 50%; background: white; border: 3px solid var(--forest-light); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--forest); position: relative; z-index: 2; transition: all 0.3s ease; box-shadow: 0 4px 15px var(--shadow); }
+.stage-item:hover .stage-number { background: var(--forest); color: white; border-color: var(--forest); transform: scale(1.15); box-shadow: 0 10px 30px rgba(45,90,61,0.35); }
+.stage-content { background: white; border-radius: 20px; padding: 2rem 2.5rem; flex: 1; border: 2px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+.stage-item:hover .stage-content { box-shadow: 0 15px 40px var(--shadow); transform: translateX(6px); border-color: rgba(45,90,61,0.1); }
+.stage-content h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+.stage-content p { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
+
+/* ===== BADGE SYSTEM ===== */
+.badge-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); }
+.badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.8rem; }
+.badge-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); }
+.badge-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px var(--shadow-lg); }
+.badge-visual { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; position: relative; }
+.badge-card:nth-child(1) .badge-visual { background: linear-gradient(135deg, #E8956F, #C4724E); box-shadow: 0 10px 30px rgba(196,114,78,0.35); }
+.badge-card:nth-child(2) .badge-visual { background: linear-gradient(135deg, #7BA7BC, #4A8C9E); box-shadow: 0 10px 30px rgba(123,167,188,0.35); }
+.badge-card:nth-child(3) .badge-visual { background: linear-gradient(135deg, #C9A96E, #A8884D); box-shadow: 0 10px 30px rgba(201,169,110,0.35); }
+.badge-card:nth-child(4) .badge-visual { background: linear-gradient(135deg, #2D5A3D, #1A3A2A); box-shadow: 0 10px 30px rgba(45,90,61,0.35); }
+.badge-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
+.badge-card p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.6; }
+.badge-note { text-align: center; margin-top: 3.5rem; padding: 2rem 2.5rem; background: var(--forest); border-radius: 20px; color: white; font-size: 0.95rem; line-height: 1.7; max-width: 750px; margin-left: auto; margin-right: auto; }
+.badge-note strong { color: var(--gold); }
+
+/* ===== UNIFORM ===== */
+.uniform-section { background: var(--warm-white); overflow: hidden; }
+.uniform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.uniform-visual { position: relative; }
+.uniform-items { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+.uniform-item { background: white; border-radius: 24px; padding: 2.5rem; text-align: center; border: 2px solid rgba(0,0,0,0.04); transition: all 0.4s ease; }
+.uniform-item:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: rgba(45,90,61,0.1); }
+.uniform-item-icon { font-size: 3rem; margin-bottom: 1rem; }
+.uniform-item h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--dark); }
+.uniform-item p { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.5; }
+.uniform-text h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 1.2rem; line-height: 1.2; }
+.uniform-text h2 span { color: var(--forest); }
+.uniform-text p { font-size: 1.05rem; color: var(--warm-gray); line-height: 1.7; margin-bottom: 1.8rem; }
+.uniform-note { background: var(--sand-light); padding: 1.5rem 2rem; border-radius: 16px; border-left: 5px solid var(--forest); font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
+
+/* ===== PRICING ===== */
+.pricing-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; align-items: stretch; }
+.pricing-card { background: white; border-radius: 28px; padding: 3rem 2.5rem; position: relative; overflow: hidden; transition: all 0.4s ease; border: 3px solid transparent; display: flex; flex-direction: column; }
+.pricing-card:hover { transform: translateY(-10px); box-shadow: 0 30px 70px var(--shadow-lg); }
+.pricing-card.featured { border-color: var(--forest); background: linear-gradient(180deg, white 0%, rgba(45,90,61,0.03) 100%); }
+.pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--forest); }
+.pricing-badge { position: absolute; top: 1.8rem; right: 1.8rem; background: var(--forest); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.pricing-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
+.pricing-desc { font-size: 0.9rem; color: var(--warm-gray); margin-bottom: 1.8rem; line-height: 1.5; }
+.pricing-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--dark); margin-bottom: 0.4rem; }
+.pricing-price span { font-size: 1.1rem; font-weight: 400; color: var(--warm-gray); }
+.pricing-period { font-size: 0.85rem; color: var(--warm-gray); margin-bottom: 2.5rem; font-weight: 500; }
+.pricing-features { list-style: none; margin-bottom: 2.5rem; flex: 1; }
+.pricing-features li { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.6rem 0; font-size: 0.9rem; color: var(--dark); line-height: 1.4; }
+.pricing-features li::before { content: '✓'; color: var(--forest); font-weight: 700; min-width: 20px; font-size: 1.1rem; }
+.pricing-btn { display: block; text-align: center; padding: 1.2rem; border-radius: 16px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer; width: 100%; }
+.pricing-btn-outline { background: transparent; border: 2px solid var(--forest); color: var(--forest) !important; }
+.pricing-btn-outline:hover { background: var(--forest); color: white !important; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(45,90,61,0.25); }
+.pricing-btn-filled { background: var(--forest); color: white !important; }
+.pricing-btn-filled:hover { background: var(--forest-deep); box-shadow: 0 12px 35px rgba(45,90,61,0.35); transform: translateY(-2px); }
+.pricing-btn-gold { background: var(--gold); color: var(--dark) !important; }
+.pricing-btn-gold:hover { background: var(--gold-light); box-shadow: 0 12px 35px rgba(201,169,110,0.35); transform: translateY(-2px); }
+
+/* ===== PARENT BENEFITS ===== */
+.parent-section { background: var(--warm-white); }
+.parent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+.parent-card { background: white; border-radius: 24px; padding: 2.5rem; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); }
+.parent-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: rgba(45,90,61,0.1); }
+.parent-card-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(45,90,61,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
+.parent-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+.parent-card p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.6; }
+
+/* ===== FAQ ===== */
+.faq-section { background: var(--sand-light); }
+.faq-list { max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.faq-item { background: white; border-radius: 20px; overflow: hidden; border: 2px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+.faq-item:hover { box-shadow: 0 10px 30px var(--shadow); }
+.faq-question { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; cursor: pointer; gap: 1.2rem; user-select: none; }
+.faq-question h3 { font-size: 1rem; font-weight: 700; color: var(--dark); line-height: 1.4; }
+.faq-toggle { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: rgba(45,90,61,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.3rem; color: var(--forest); font-weight: 300; }
+.faq-item.active .faq-toggle { background: var(--forest); color: white; transform: rotate(45deg); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-item.active .faq-answer { max-height: 350px; }
+.faq-answer-inner { padding: 0 2rem 1.5rem; font-size: 0.95rem; color: var(--warm-gray); line-height: 1.7; }
+
+/* ===== CTA SECTION ===== */
+.cta-section { background: var(--forest-deep); position: relative; overflow: hidden; }
+.cta-inner { position: relative; z-index: 1; text-align: center; max-width: 750px; margin: 0 auto; }
+.cta-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: white; margin-bottom: 1.2rem; line-height: 1.2; }
+.cta-inner h2 span { color: var(--gold); }
+.cta-inner p { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 3rem; line-height: 1.7; }
+/* ===== CTA FORM ===== */
+
+.cta-form{
+  display:grid;
+
+  grid-template-columns:
+    1fr
+    180px
+    1fr
+    auto;
+
+  gap:1rem;
+
+  max-width:1000px;
+
+  margin:0 auto 1.2rem;
+}
+
+.cta-form input{
+  width:100%;
+
+  padding:1.1rem 1.4rem;
+
+  border-radius:18px;
+
+  border:2px solid rgba(255,255,255,0.12);
+
+  background:rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(10px);
+
+  color:white;
+
+  font-size:.95rem;
+
+  outline:none;
+
+  transition:all .3s ease;
+}
+
+.cta-form input:focus{
+  border-color:var(--gold);
+
+  background:rgba(255,255,255,0.12);
+
+  box-shadow:0 0 0 4px rgba(201,169,110,.12);
+}
+
+.cta-form input::placeholder{
+  color:rgba(255,255,255,.45);
+}
+
+.cta-form button{
+  padding:1.1rem 2rem;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:linear-gradient(
+          135deg,
+          var(--gold-light),
+          var(--gold)
+  );
+
+  color:var(--dark);
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:all .3s ease;
+
+  white-space:nowrap;
+}
+
+.cta-form button:hover{
+  transform:translateY(-3px);
+
+  box-shadow:
+          0 15px 35px rgba(201,169,110,.35);
+}
+
+/* TABLET */
+
+@media(max-width:900px){
+
+  .cta-form{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+/* MOBILE */
+
+@media(max-width:640px){
+
+  .cta-form{
+    grid-template-columns:1fr;
+
+    gap:.8rem;
+  }
+
+  .cta-form input,
+  .cta-form button{
+    border-radius:16px;
+
+    padding:1rem 1.1rem;
+
+    font-size:.9rem;
+  }
+
+}
+.cta-note { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+
+/* ===== FOOTER ===== */
+.footer { background: #1A1714; padding: 4rem 2rem; text-align: center; }
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); margin-bottom: 1.2rem; }
+.footer-text { font-size: 0.9rem; color: rgba(255,255,255,0.4); line-height: 1.6; margin-bottom: 2rem; }
+.footer-links { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500; }
+.footer-links a:hover { color: var(--gold); }
+.footer-legal { margin-top: 2.5rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+.footer-legal a { color: rgba(255,255,255,0.4); font-size: 0.8rem; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.2); transition: all 0.3s; }
+.footer-legal a:hover { color: var(--gold); text-decoration-color: var(--gold); }
+.footer-locations { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+.footer-locations h4 { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 600; }
+.footer-locations p { color: rgba(255,255,255,0.35); font-size: 0.8rem; line-height: 1.6; }
+
+/* ===== LEGAL MODALS ===== */
+.legal-modal-overlay { position: fixed; inset: 0; background: rgba(26, 23, 20, 0.9); backdrop-filter: blur(10px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+.legal-modal-overlay.active { opacity: 1; visibility: visible; }
+.legal-modal { background: white; width: 100%; max-width: 950px; max-height: 85vh; border-radius: 28px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.5); transform: translateY(30px) scale(0.97); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.legal-modal-overlay.active .legal-modal { transform: translateY(0) scale(1); }
+.legal-modal-header { padding: 2rem 2.5rem; border-bottom: 2px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; background: var(--warm-white); }
+.legal-modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+.legal-modal-close { width: 42px; height: 42px; border-radius: 50%; background: rgba(42,37,32,0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.3rem; color: var(--warm-gray); transition: all 0.2s; }
+.legal-modal-close:hover { background: rgba(42,37,32,0.15); color: var(--dark); transform: rotate(90deg); }
+.legal-modal-body { padding: 2.5rem; overflow-y: auto; flex: 1; }
+.legal-modal-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin: 2rem 0 1rem; color: var(--forest); font-weight: 700; }
+.legal-modal-body h3:first-child { margin-top: 0; }
+.legal-modal-body p, .legal-modal-body li { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.8; margin-bottom: 0.8rem; }
+.legal-modal-body ul { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+.legal-modal-body a { color: var(--forest); text-decoration: underline; }
+.legal-modal-body a:hover { color: var(--gold); }
+.legal-modal-body .highlight { background: var(--sand-light); padding: 1.5rem; border-radius: 14px; border-left: 4px solid var(--forest); font-style: italic; }
+
+@media (max-width: 768px) { .legal-modal { max-height: 90vh; border-radius: 20px; } .legal-modal-header { padding: 1.5rem; } .legal-modal-body { padding: 1.5rem; } }
+
+/* ===== SCROLL ANIMATIONS ===== */
+.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-visual { max-width: 550px; margin: 0 auto; }
+  .directions-map { grid-template-columns: repeat(4, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-item:nth-child(2)::after { display: none; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+  /*.small-group-grid, .uniform-grid { grid-template-columns: 1fr; }*/
+  .uniform-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 2.2rem; }
+  .hero-subtitle { font-size: 1rem; }
+  .hero-buttons { flex-direction: column; }
+  .hero-buttons a { text-align: center; justify-content: center; }
+  /*.modular-grid { grid-template-columns: 1fr; }*/
+  .directions-map { grid-template-columns: repeat(2, 1fr); }
+  .direction-card:last-child { grid-column: span 2; max-width: 60%; margin: 0 auto; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .badge-grid { grid-template-columns: 1fr 1fr; }
+  .parent-grid { grid-template-columns: 1fr; }
+  .cta-form { flex-direction: column; }
+  .uniform-items { grid-template-columns: 1fr 1fr; }
+  /* MODULAR GRID MOBILE 2 COLS */
+
+  .modular-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.7rem;
+  }
+
+  .modular-card {
+    padding: 1rem;
+
+    border-radius: 16px;
+
+    min-height: 170px;
+  }
+
+  .modular-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .modular-card h3 {
+    font-size: 1rem;
+    line-height: 1.25;
+    margin-bottom: 0.35rem;
+  }
+
+  .modular-card p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .modular-stud {
+    right: 10px;
+  }
+
+  .modular-stud span {
+    width: 8px;
+    height: 8px;
+  }
+}
+@media (max-width: 480px) {
+  section { padding: 5rem 1.5rem; }
+  /*.directions-map { grid-template-columns: 1fr; }*/
+  .direction-card:last-child { grid-column: auto; max-width: 100%; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-item::after { display: none !important; }
+  .badge-grid { grid-template-columns: 1fr; }
+  .hero-image-grid { grid-template-columns: 1fr; }
+  .hero-img:nth-child(2) { margin-top: 0; }
+  .uniform-items { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">🌿 ДикоУмные</div>
+  <div class="preloader-bar"><div class="preloader-bar-inner"></div></div>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.5"/><path d="M9 18c0-4 2-7 5-9 3 2 5 5 5 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="12" r="2" fill="currentColor"/></svg>
+      ДикоУмные
+    </a>
+    <ul class="nav-links">
+      <li><a href="#method">Методика</a></li>
+      <li><a href="#directions">7 направлений</a></li>
+      <li><a href="#path">Путь ребёнка</a></li>
+      <li><a href="#pricing">Тарифы</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+      <li><a href="#cta" class="nav-cta">Записаться</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO WITH VIDEO BACKGROUND -->
+<section class="hero" id="hero">
+  <div class="hero-video-container">
+    <video class="hero-video" autoplay muted loop playsinline poster="himg/explore.jpg">
+      <source src="https://videos.pexels.com/video-files/5426503/5426503-hd_1920_1080_25fps.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-bg-fallback"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Камерные экспедиции • 5–7 детей • Парки Санкт-Петербурга</div>
+      <h1>Экспедиции, где ребёнок <span>собирает себя</span> по-настоящему</h1>
+      <p class="hero-subtitle">90 минут на природе в малом отряде 5–7 детей: ребёнок исследует, строит, наблюдает, договаривается, получает роли, шевроны и первые следы своего развития.</p>
+      <div class="hero-buttons">
+        <a href="#cta" class="btn-primary">Записаться на первую прогулку <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="#method" class="btn-secondary">Посмотреть, как устроен клуб <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-image-grid">
+        <div class="hero-img"><img src="https://res.cloudinary.com/djscctvoj/image/upload/v1778653872/team_hjtbbg.jpg" alt="Дети исследуют природу в парке 300-летия" loading="lazy"><div class="hero-img-label">🔍 Парк 300-летия • Наблюдение</div></div>
+        <div class="hero-img"><img src="https://res.cloudinary.com/djscctvoj/image/upload/v1778653962/hero_syuwfc.jpg" alt="Командная работа на Крестовском острове" loading="lazy"><div class="hero-img-label">🤝 Крестовский остров • Команда</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MODULAR: Как конструктор, только в живой природе -->
+<section class="modular-section" id="method">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-tag"><span class="section-tag-line"></span>Методика<span class="section-tag-line"></span></div>
+      <h2 class="section-title">Как конструктор, только <span>в живой природе</span></h2>
+      <p class="section-subtitle">Каждая прогулка — это «деталь» большого пути ребёнка. По одной детали за раз — складывается целая картина развития.</p>
+    </div>
+    <div class="modular-grid">
+      <div class="modular-card reveal reveal-delay-1"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🧭</div><h3>Экспедиция</h3><p>Ребёнок проживает настоящий опыт на природе: исследует, чувствует, удивляется, задаёт вопросы.</p></div>
+      <div class="modular-card reveal reveal-delay-2"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🎭</div><h3>Роль</h3><p>Ребёнок пробует себя наблюдателем, следопытом, рассказчиком, навигатором — и находит своё.</p></div>
+      <div class="modular-card reveal reveal-delay-4"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🏅</div><h3>Шеврон</h3><p>Фиксирует не победу, а устойчивый навык. Не «лучший», а «научился».</p></div>
+      <div class="modular-card reveal reveal-delay-5"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🗺️</div><h3>Карта развития</h3><p>Показывает родителю, что растёт внутри ребёнка — по 7 направлениям, без оценок и баллов.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="section-container">
+    <div class="stats-grid">
+      <div class="stat-item reveal"><div class="stat-number"><span class="counter" data-target="7">0</span></div><div class="stat-label">направлений развития</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-number"><span class="counter" data-target="27">0</span></div><div class="stat-label">компетенций наблюдения</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-number"><span class="counter" data-target="90">0</span></div><div class="stat-label">минут экспедиции</div></div>
+      <div class="stat-item reveal reveal-delay-3"><div class="stat-number"><span class="counter" data-target="5">0</span>–<span class="counter" data-target="7">0</span></div><div class="stat-label">детей в отряде</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SMALL GROUP -->
+<section class="small-group-section">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Философия<span class="section-tag-line"></span></div><h2 class="section-title">Почему маленький отряд <span>важнее большой группы</span></h2><p class="section-subtitle">Здесь ребёнка действительно видят. Не «одного из двадцати», а каждого.</p></div>
+    <div class="small-group-grid">
+      <div class="small-group-image reveal"><img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&q=80" alt="Педагог с малой группой детей в Приморском районе" loading="lazy"><div class="small-group-image-badge"><div class="small-group-image-badge-icon">👁️</div><div class="small-group-image-badge-text"><strong>Видим каждого</strong>5–7 детей в отряде</div></div></div>
+      <ul class="small-group-points">
+<!--        <li class="reveal reveal-delay-1"><div class="icon">👁️</div><div><h4>Педагог видит каждого ребёнка</h4><p>Не «управляет толпой», а сопровождает каждого.</p></div></li>-->
+<!--        <li class="reveal reveal-delay-2"><div class="icon">🔇</div><div><h4>Ребёнок не растворяется в шуме</h4><p>Тишина и пространство для внутреннего голоса.</p></div></li>-->
+        <li class="reveal reveal-delay-3"><div class="icon">💎</div><div><h4>Проще заметить сильные стороны</h4><p>Каждый талант получает пространство для проявления.</p></div></li>
+        <li class="reveal reveal-delay-4"><div class="icon">🤗</div><div><h4>Легче поддержать тревожного ребёнка</h4><p>Без давления, в безопасной камерной среде.</p></div></li>
+        <li class="reveal reveal-delay-5"><div class="icon">💬</div><div><h4>Больше настоящего взаимодействия</h4><p>Каждый голос слышен. Каждый важен.</p></div></li>
+        <li class="reveal"><div class="icon">🧘</div><div><h4>Меньше перегрузки</h4><p>Темп, который подходит конкретному ребёнку.</p></div></li>
+        <li class="reveal"><div class="icon">🛡️</div><div><h4>Выше безопасность</h4><p>Полный контроль и внимание к каждому.</p></div></li>
+        <li class="reveal"><div class="icon">❤️</div><div><h4>Больше доверия родителей</h4><p>Вы знаете, кто рядом с вашим ребёнком.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 7 DIRECTIONS -->
+<section class="directions-section" id="directions">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Карта развития<span class="section-tag-line"></span></div><h2 class="section-title">7 направлений <span>развития</span></h2><p class="section-subtitle">Не фантазийные миры, а методическая карта: что растёт внутри ребёнка на каждой экспедиции.</p></div>
+    <div class="directions-map">
+      <div class="direction-card reveal reveal-delay-1"><span class="direction-number">01</span><div class="direction-icon">🏃</div><h3>Тело</h3><p>Координация, выносливость, моторика, телесная осознанность</p></div>
+      <div class="direction-card reveal reveal-delay-2"><span class="direction-number">02</span><div class="direction-icon">🗣️</div><h3>Речь</h3><p>Словарь, связность, умение задавать вопросы, рассказывать</p></div>
+      <div class="direction-card reveal reveal-delay-3"><span class="direction-number">03</span><div class="direction-icon">🧠</div><h3>Интеллект</h3><p>Наблюдательность, логика, причинно-следственные связи</p></div>
+      <div class="direction-card reveal reveal-delay-4"><span class="direction-number">04</span><div class="direction-icon">🎨</div><h3>Творчество</h3><p>Воображение, нестандартные решения, эстетическое чувство</p></div>
+      <div class="direction-card reveal"><span class="direction-number">05</span><div class="direction-icon">👥</div><h3>Социум</h3><p>Коммуникация, эмпатия, умение договариваться, лидерство</p></div>
+      <div class="direction-card reveal reveal-delay-1"><span class="direction-number">06</span><div class="direction-icon">⚡</div><h3>Воля / субъектность</h3><p>Инициатива, самостоятельность, принятие решений</p></div>
+      <div class="direction-card reveal reveal-delay-2"><span class="direction-number">07</span><div class="direction-icon">🔧</div><h3>Технологии / проекты</h3><p>Инструменты, карты, компасы, создание мини-проектов</p></div>
+    </div>
+    <div class="directions-note reveal">🗺️ Каждая экспедиция затрагивает 2–3 направления. К концу сезона родитель видит <strong>полную карту развития</strong> — не оценки, а реальные проявления ребёнка.</div>
+  </div>
+</section>
+
+<!-- CHILD PATH -->
+<section class="path-section" id="path">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Маршрут<span class="section-tag-line"></span></div><h2 class="section-title">Путь ребёнка — <span>от первой прогулки к Хранителю</span></h2><p class="section-subtitle">Каждый шаг фиксируется. Каждый навык получает знак. Каждый ребёнок идёт своим темпом.</p></div>
+    <div class="path-timeline reveal">
+      <div class="path-step"><div class="path-step-dot"><span>🌱</span></div><div class="path-step-title">1 прогулка</div><div class="path-step-desc">Первый шаг в экспедицию</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>📓</span></div><div class="path-step-title">Дневник</div><div class="path-step-desc">Фиксация наблюдений</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>🎭</span></div><div class="path-step-title">Роль</div><div class="path-step-desc">Первая ответственная роль</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>⭐</span></div><div class="path-step-title">Наклейка</div><div class="path-step-desc">Отметка в дневнике</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>🗺️</span></div><div class="path-step-title">Карта 7 напр.</div><div class="path-step-desc">Заполнение карты развития</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>🏅</span></div><div class="path-step-title">Шеврон</div><div class="path-step-desc">Устойчивый навык</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>🏆</span></div><div class="path-step-title">Медаль сезона</div><div class="path-step-desc">Закрытие направления</div></div>
+      <div class="path-step"><div class="path-step-dot"><span>🌿</span></div><div class="path-step-title">Хранитель</div><div class="path-step-desc">Зрелая позиция и наставничество</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PEDAGOG -->
+<section class="mentor-section" id="mentor">
+
+  <div class="section-container">
+
+    <div class="section-header reveal">
+      <div class="section-tag">
+        <span class="section-tag-line"></span>
+        Педагог
+        <span class="section-tag-line"></span>
+      </div>
+
+      <h2 class="section-title">
+        Кто сопровождает <span>детей</span>
+      </h2>
+
+      <p class="section-subtitle">
+        Не аниматор и не массовик. Педагог-проводник,
+        который видит ребёнка и держит безопасную среду.
+      </p>
+    </div>
+
+    <div class="mentor-card reveal">
+
+      <div class="mentor-photo">
+        <img src="https://res.cloudinary.com/djscctvoj/image/upload/v1778794199/m6-IGeXb9JoGYab85MIIKGF6xlG1Fdd7jkKrc3M1RMEhWD42ebFvBjSb0dXReLMmYrXHjayNvSatB2Ls1womup1b_q8rmc5.jpg"
+                alt="Педагог клуба">
+      </div>
+
+      <div class="mentor-content">
+
+        <div class="mentor-label">
+          Руководитель-педагог
+        </div>
+
+        <h3 class="mentor-name">
+          Екатерина Николаева
+        </h3>
+
+        <div class="mentor-grid">
+
+          <div class="mentor-item">
+            <span>Образование</span>
+            <p>
+              РГПУ им. Герцена<br>
+              Педагог-психолог
+            </p>
+          </div>
+          <div class="mentor-item">
+            <span>Стаж</span>
+            <p>
+              Более 10 лет<br>
+              работы с детьми
+            </p>
+          </div>
+        </div>
+        <div class="mentor-description">
+          Специалист по детскому развитию,
+          семейной психологии и работе
+          с малыми группами. Создаёт среду,
+          где ребёнок раскрывается через
+          природу, исследование и живой опыт.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 STAGES -->
+<section class="stages-section">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Структура<span class="section-tag-line"></span></div><h2 class="section-title">Как проходит <span>экспедиция</span></h2><p class="section-subtitle">90 минут, 7 этапов. Каждый — с педагогическим смыслом.</p></div>
+    <div class="stages-timeline">
+      <div class="stage-item reveal"><div class="stage-number">1</div><div class="stage-content"><h3>Вход и настройка</h3><p>Приветствие, ритуал входа, настройка на экспедицию. Ребёнок переключается из города в природу.</p></div></div>
+      <div class="stage-item reveal reveal-delay-1"><div class="stage-number">2</div><div class="stage-content"><h3>Сенсорное включение</h3><p>Слушаем, трогаем, нюхаем, смотрим. Пять чувств просыпаются и настраиваются на исследование.</p></div></div>
+      <div class="stage-item reveal reveal-delay-2"><div class="stage-number">3</div><div class="stage-content"><h3>Исследовательская задача</h3><p>Педагог даёт задачу-приключение: найти, сравнить, построить, разгадать.</p></div></div>
+      <div class="stage-item reveal reveal-delay-3"><div class="stage-number">4</div><div class="stage-content"><h3>Свободное исследование</h3><p>Дети самостоятельно исследуют, пробуют, ошибаются, находят. Педагог наблюдает и поддерживает.</p></div></div>
+      <div class="stage-item reveal reveal-delay-4"><div class="stage-number">5</div><div class="stage-content"><h3>Командное взаимодействие</h3><p>Совместная задача, где нужно договориться, распределить роли, прийти к общему решению.</p></div></div>
+      <div class="stage-item reveal reveal-delay-5"><div class="stage-number">6</div><div class="stage-content"><h3>Рефлексия и фиксация</h3><p>Круг, обсуждение, запись в дневник. Что узнали? Что удивило? Что получилось?</p></div></div>
+      <div class="stage-item reveal"><div class="stage-number">7</div><div class="stage-content"><h3>Завершение и перенос домой</h3><p>Ритуал завершения, наклейка в дневник. Ребёнок уходит с ощущением завершённости и вопросом для дома.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BADGE SYSTEM -->
+<section class="badge-section">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Мотивация<span class="section-tag-line"></span></div><h2 class="section-title">Система шевронов <span>без соревнования</span></h2><p class="section-subtitle">Шевроны не за «лучший результат», а за устойчивое проявление навыка. Каждый ребёнок собирает свой набор.</p></div>
+    <div class="badge-grid">
+      <div class="badge-card reveal reveal-delay-1"><div class="badge-visual">⭐</div><h3>Наклейка в дневник</h3><p>После каждой прогулки — отметка о пройденном опыте. Маленький, но важный шаг.</p></div>
+      <div class="badge-card reveal reveal-delay-2"><div class="badge-visual">📌</div><h3>Наклейка в карту</h3><p>После устойчивого проявления навыка в одном из 7 направлений.</p></div>
+      <div class="badge-card reveal reveal-delay-3"><div class="badge-visual">🏅</div><h3>Большой шеврон</h3><p>На жилет — после закрытия целого направления. Видимый знак роста.</p></div>
+      <div class="badge-card reveal reveal-delay-4"><div class="badge-visual">🌿</div><h3>Хранитель Планеты</h3><p>Главный шеврон — за зрелую позицию, ответственность и наставничество младших.</p></div>
+    </div>
+    <div class="badge-note reveal"><strong>Без соревнований.</strong> Без «кто лучше». Каждый ребёнок идёт своим темпом и собирает свою коллекцию шевронов. Мы фиксируем не победу над другими, а рост самого ребёнка.</div>
+  </div>
+</section>
+
+<!-- UNIFORM -->
+<section class="uniform-section">
+  <div class="section-container">
+    <div class="uniform-grid">
+      <div class="uniform-visual reveal">
+        <div class="uniform-items">
+          <div class="uniform-item"><div class="uniform-item-icon">🦺</div><h4>Жилет Хранителя</h4><p>Знак принадлежности. На жилет крепятся шевроны.</p></div>
+          <div class="uniform-item"><div class="uniform-item-icon">🧢</div><h4>Панама</h4><p>Защита от солнца и дождя. Часть клубного кода.</p></div>
+          <div class="uniform-item"><div class="uniform-item-icon">🏅</div><h4>Стартовый шеврон</h4><p>Первый знак. Все остальные собираются постепенно.</p></div>
+          <div class="uniform-item"><div class="uniform-item-icon">📓</div><h4>Дневник наблюдений</h4><p>Личная карта пути ребёнка. Заполняется на каждой экспедиции.</p></div>
+        </div>
+      </div>
+      <div class="uniform-text reveal reveal-delay-2">
+        <h2>Форма — не мерч, а <span>знак принадлежности</span></h2>
+        <p>Жилет + панама + стартовый шеврон. Это не покупка, а включение в клубный маршрут. Форма появляется после того, как ребёнок становится частью отряда. Приобретается отдельно, стоимость: 5000р.</p>
+        <p>Шевроны собираются постепенно. Каждый — результат реального навыка, а не покупки.</p>
+        <div class="uniform-note">💡 Форма выдаётся после включения в клубный маршрут. Это знак: «Ты — часть чего-то настоящего».</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Маршруты<span class="section-tag-line"></span></div><h2 class="section-title">Выберите <span>свой маршрут</span></h2><p class="section-subtitle">Первый шаг — бесплатный. Дальше — по мере роста ребёнка.</p></div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1"><div class="pricing-name">Первый шаг</div><div class="pricing-desc">Пробная экспедиция — чтобы почувствовать формат.</div><div class="pricing-price">0 ₽</div><div class="pricing-period">1 пробная экспедиция</div><ul class="pricing-features"><li>1 экспедиция на природе</li><li>Камерный отряд 5–7 детей</li><li>Знакомство с методикой</li><li>Первая наклейка в дневник</li><li>Без обязательств</li></ul><a href="#cta" class="pricing-btn pricing-btn-outline">Попробовать бесплатно</a></div>
+      <div class="pricing-card featured reveal reveal-delay-2"><div class="pricing-badge">Популярный</div><div class="pricing-name">Стартовый маршрут</div><div class="pricing-desc">Первые серьёзные шаги: 4 экспедиции, дневник, первые наблюдения.</div><div class="pricing-price">6 900 ₽</div><div class="pricing-period">4 экспедиции</div><ul class="pricing-features"><li>4 экспедиции на природе</li><li>Камерный отряд 5–7 детей</li><li>Дневник наблюдений</li><li>Наклейки после каждой прогулки</li><li>Первые наблюдения педагога</li><li>Доступ в клубный Telegram</li></ul><a href="#cta" class="pricing-btn pricing-btn-filled">Начать маршрут</a></div>
+      <div class="pricing-card reveal reveal-delay-3"><div class="pricing-badge">Полный путь</div><div class="pricing-name">Клубный маршрут</div><div class="pricing-desc">Постоянный отряд, шевроны, карта пути и форма Хранителя.</div><div class="pricing-price">11 900 ₽</div><div class="pricing-period">8 экспедиций</div><ul class="pricing-features"><li>8 экспедиций на природе</li><li>Постоянный отряд 5–7 детей</li><li>Мини-динамика развития</li><li>Приглашение к посвящению</li><li>Доступ к шевронам и карте пути</li><li>Право на форму Хранителя по клубной цене</li></ul><a href="#cta" class="pricing-btn pricing-btn-gold">Стать Хранителем</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARENT BENEFITS -->
+<section class="parent-section">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Для родителя<span class="section-tag-line"></span></div><h2 class="section-title">Что получает <span>родитель</span></h2><p class="section-subtitle">Вы платите не за прогулку. Вы инвестируете в среду, где вашего ребёнка видят, раскрывают и ведут по маршруту развития.</p></div>
+    <div class="parent-grid">
+      <div class="parent-card reveal reveal-delay-1"><div class="parent-card-icon">📵</div><h3>Меньше экранов</h3><p>Ребёнок проводит время в живой среде — с реальными объектами, запахами, звуками.</p></div>
+      <div class="parent-card reveal reveal-delay-2"><div class="parent-card-icon">🦋</div><h3>Больше самостоятельности</h3><p>Ребёнок учится принимать решения, действовать без подсказки взрослого.</p></div>
+      <div class="parent-card reveal reveal-delay-3"><div class="parent-card-icon">💬</div><h3>Больше речи и вопросов</h3><p>Природа провоцирует любопытство. Ребёнок задаёт вопросы, рассказывает, рассуждает.</p></div>
+      <div class="parent-card reveal"><div class="parent-card-icon">💪</div><h3>Больше уверенности</h3><p>Каждый шеврон, каждая роль — кирпичик в фундаменте самооценки.</p></div>
+      <div class="parent-card reveal reveal-delay-1"><div class="parent-card-icon">🔍</div><h3>Видите сильные стороны</h3><p>Карта развития показывает, что у ребёнка получается — не в школе, а в жизни.</p></div>
+      <div class="parent-card reveal reveal-delay-2"><div class="parent-card-icon">🗺️</div><h3>Понятный маршрут развития</h3><p>Не хаотичные кружки, а система: 7 направлений, шевроны, дневник, педагогическое наблюдение.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-container">
+    <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Вопросы<span class="section-tag-line"></span></div><h2 class="section-title">Частые <span>вопросы</span></h2></div>
+    <div class="faq-list">
+      <div class="faq-item reveal"><div class="faq-question" onclick="toggleFaq(this)"><h3>Почему только 5–7 детей?</h3><div class="faq-toggle">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Потому что педагогическое наблюдение возможно только в камерной группе. В 5–7 детей мы видим каждого: его темп, его сильные стороны, его зоны роста. Это не конвейер — это сопровождение.</div></div></div>
+      <div class="faq-item reveal reveal-delay-1"><div class="faq-question" onclick="toggleFaq(this)"><h3>Где проходят прогулки?</h3><div class="faq-toggle">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Парки и природные территории Санкт-Петербурга и Ленинградской области: парк 300-летия, Крестовский остров, Юнтоловский заповедник, Лисино, закрытые дворы, Лахта, Удельный парк, Приморский район и другие локации. Каждый маршрут — новый опыт, новая природа.</div></div></div>
+      <div class="faq-item reveal reveal-delay-2"><div class="faq-question" onclick="toggleFaq(this)"><h3>Чем это отличается от обычного кружка?</h3><div class="faq-toggle">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Обычный кружок учит навыку. Мы создаём среду, где ребёнок растёт по 7 направлениям одновременно. Нет оценок, нет соревнований — есть карта развития, шевроны и педагогическое наблюдение.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-question" onclick="toggleFaq(this)"><h3>Что если ребёнок тревожный?</h3><div class="faq-toggle">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Камерный отряд 5–7 детей — идеальная среда для тревожного ребёнка. Нет шума толпы, нет давления. Педагог видит каждого и поддерживает мягко. Многие тревожные дети раскрываются именно в таком формате.</div></div></div>
+      <div class="faq-item reveal"><div class="faq-question" onclick="toggleFaq(this)"><h3>Что если дождь?</h3><div class="faq-toggle">+</div></div><div class="faq-answer"><div class="faq-answer-inner">Дождь — это не отмена, а новый опыт. Мы выходим в подходящей экипировке. Дождь, снег, туман — всё это часть живой природы. Если погода действительно опасная — переносим на другой день.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="section-container">
+    <div class="cta-inner reveal">
+      <h2>Запишите ребёнка на <span>первую экспедицию</span></h2>
+      <p>Первое знакомство — бесплатно. Пусть ребёнок попробует, почувствует, решит сам.</p>
+      <form class="cta-form" id="ctaForm">
+
+        <input
+                type="text"
+                placeholder="Имя родителя"
+                required
+                id="parentName"
+                name="parent_name"
+        >
+
+        <input
+                type="number"
+                placeholder="Возраст ребёнка"
+                required
+                min="1"
+                max="17"
+                id="childAge"
+                name="child_age"
+        >
+
+        <input
+                type="tel"
+                placeholder="Телефон родителя"
+                required
+                id="phoneInput"
+                name="phone"
+        >
+
+       <button type="submit" id="submitBtn">
+            Записаться
+          </button>
+
+        </form>
+        <p class="cta-note">Перезвоним в течение 30 минут</p>
+      </div>
+    </div>
+  </section>
+
+<!--   FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">🌿 ДикоУмные прогулки</div>
+    <p class="footer-text">Премиальный детский исследовательский клуб<br>Санкт-Петербург и Ленинградская область</p>
+    <div class="footer-links">
+      <a href="#method">Методика</a>
+      <a href="#directions">7 направлений</a>
+      <a href="#path">Путь ребёнка</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="#faq">Вопросы</a>
+    </div>
+    <div class="footer-locations">
+      <h4>📍 Наши локации</h4>
+      <p>Парк 300-летия • Крестовский остров • Юнтоловский заповедник • Лисино • Закрытые дворы • Лахта • Удельный парк • Приморский район и другие</p>
+    </div>
+    <div class="footer-legal">
+      <a href="#" onclick="openModal('offer'); return false;">Публичная оферта</a>
+      <a href="#" onclick="openModal('privacy'); return false;">Политика конфиденциальности</a>
+    </div>
+    <p class="footer-text" style="margin-top: 2.5rem; font-size: 0.8rem;">© 2026 ДикоУмные прогулки — Хранители Планеты. Все права защищены.</p>
+  </div>
+</footer>
+
+<!-- LEGAL MODALS (same as before) -->
+<div class="legal-modal-overlay" id="modal-offer">
+  <div class="legal-modal">
+    <div class="legal-modal-header"><h3 class="legal-modal-title">Публичная оферта</h3><button class="legal-modal-close" onclick="closeModal('offer')">✕</button></div>
+    <div class="legal-modal-body">
+      <h3>1. Общие положения</h3>
+      <p>Настоящий документ является официальным предложением (публичной офертой) [Наименование организации/ИП], ИНН [Ваш ИНН], ОГРН/ОГРНИП [Ваш ОГРН], расположенного по адресу: [Ваш юридический адрес] (далее — «Исполнитель»), и содержит все существенные условия оказания услуг по организации детских исследовательских экспедиций и клубных мероприятий (далее — «Услуги»).</p>
+      <div class="highlight">Оплатой Услуг Вы принимаете условия настоящей Оферты в полном объеме (ст. 438 ГК РФ).</div>
+      <h3>2. Предмет оферты</h3>
+      <p>Исполнитель обязуется оказывать Заказчику (родителю/законному представителю ребенка) Услуги по проведению камерных экспедиций для детей в возрасте 4–12 лет на природных территориях Санкт-Петербурга и Ленинградской области, а Заказчик обязуется принять и оплатить Услуги.</p>
+      <h3>3. Стоимость и порядок оплаты</h3>
+      <p>Стоимость Услуг указывается на сайте в разделе «Тарифы» и является фиксированной на момент оформления заявки. Оплата производится путем перевода денежных средств по реквизитам, указанным Исполнителем, или через онлайн-эквайринг. Услуги считаются оплаченными с момента зачисления средств на расчетный счет Исполнителя.</p>
+      <h3>4. Порядок оказания услуг и отмена</h3>
+      <p>Экспедиции проводятся в соответствии с расписанием, размещенным в клубном Telegram-канале. Заказчик вправе отказаться от участия в конкретной экспедиции, уведомив Исполнителя не позднее чем за 24 часа до начала мероприятия. В случае отмены менее чем за 24 часа или неявки ребенка, денежные средства не возвращаются, но могут быть перенесены на следующую экспедицию в рамках текущего тарифа.</p>
+      <h3>5. Ответственность сторон</h3>
+      <p>Исполнитель несет ответственность за безопасность ребенка в период проведения экспедиции. Исполнитель не несет ответственности за скрытые заболевания ребенка, о которых Заказчик не предупредил заранее. Заказчик гарантирует, что ребенок не имеет медицинских противопоказаний к участию в мероприятиях на свежем воздухе.</p>
+      <h3>6. Форс-мажор</h3>
+      <p>Стороны освобождаются от ответственности за частичное или полное неисполнение обязательств по настоящей Оферте, если оно явилось следствием обстоятельств непреодолимой силы (стихийные явления, эпидемии, действия государственных органов и т.п.).</p>
+      <h3>7. Реквизиты и контакты</h3>
+      <p>[Наименование организации/ИП]<br>ИНН: [Ваш ИНН]<br>Адрес: [Ваш адрес]<br>Email: [Ваш email]<br>Телефон: [Ваш телефон]</p>
+    </div>
+  </div>
+</div>
+
+<div class="legal-modal-overlay" id="modal-privacy">
+  <div class="legal-modal">
+    <div class="legal-modal-header"><h3 class="legal-modal-title">Политика конфиденциальности</h3><button class="legal-modal-close" onclick="closeModal('privacy')">✕</button></div>
+    <div class="legal-modal-body">
+      <h3>1. Общие сведения</h3>
+      <p>Настоящая Политика конфиденциальности (далее — «Политика») действует в отношении всей информации, которую [Наименование организации/ИП] (далее — «Оператор») может получить о Пользователе в процессе использования сайта, регистрации на мероприятия и взаимодействия с клубом. Политика разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
+      <h3>2. Персональные данные, подлежащие обработке</h3>
+      <p>Оператор обрабатывает следующие персональные данные Пользователя:</p>
+      <ul>
+        <li>Фамилия, имя, отчество родителя/законного представителя</li>
+        <li>Контактный телефон и адрес электронной почты</li>
+        <li>Имя, возраст и особенности здоровья ребенка (только для обеспечения безопасности на экспедициях)</li>
+        <li>Информация о выбранных тарифах и посещении мероприятий</li>
+      </ul>
+      <h3>3. Цели обработки персональных данных</h3>
+      <p>Персональные данные обрабатываются в следующих целях:</p>
+      <ul>
+        <li>Идентификация Пользователя и регистрация на экспедиции</li>
+        <li>Обеспечение связи, информирование о расписании и изменениях</li>
+        <li>Организация безопасной среды для ребенка на мероприятиях</li>
+        <li>Формирование карты развития и педагогических наблюдений</li>
+        <li>Улучшение качества Услуг и клубного опыта</li>
+      </ul>
+      <h3>4. Правовые основания и способы обработки</h3>
+      <p>Обработка персональных данных осуществляется на основании согласия Пользователя, выраженного путем заполнения формы на сайте, оплаты Услуг или подписки на клубные материалы. Обработка производится как автоматизированным, так и неавтоматизированным способом.</p>
+      <h3>5. Защита персональных данных</h3>
+      <p>Оператор принимает необходимые и достаточные организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения. Доступ к данным имеют только уполномоченные сотрудники клуба.</p>
+      <h3>6. Передача данных третьим лицам</h3>
+      <p>Оператор не передает персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ, или для исполнения обязательств перед Пользователем (например, передача данных педагогическому составу, непосредственно работающему с отрядом).</p>
+      <h3>7. Права Пользователя</h3>
+      <p>Пользователь имеет право на получение информации, касающейся обработки его персональных данных, требование уточнения, блокирования или уничтожения данных, а также вправе отозвать согласие на обработку, направив письменное или электронное заявление на [Ваш email]. В случае отзыва согласия Оператор вправе продолжить обработку данных без согласия Пользователя при наличии оснований, указанных в п. 2–11 ч. 1 ст. 6, ч. 2 ст. 10 и ч. 2 ст. 11 ФЗ №152.</p>
+      <h3>8. Срок хранения данных</h3>
+      <p>Персональные данные хранятся в течение срока действия договорных отношений, а также в течение 3 (трех) лет после их прекращения, если иное не предусмотрено законодательством РФ. По истечении срока данные уничтожаются или обезличиваются.</p>
+      <h3>9. Контактные данные Оператора</h3>
+      <p>[Наименование организации/ИП]<br>Адрес: [Ваш адрес]<br>Email: [Ваш email]<br>Телефон: [Ваш телефон]</p>
+    </div>
+  </div>
+
+
+  
+</div>
+<script>
+// ===== PRELOADER =====
+window.addEventListener('load', () => { setTimeout(() => { document.getElementById('preloader').classList.add('hidden'); }, 1800); });
+
+// ===== NAVIGATION SCROLL =====
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 80); });
+
+// ===== PARTICLES =====
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement('div'); p.classList.add('particle');
+  const size = Math.random() * 6 + 3;
+  p.style.width = size + 'px'; p.style.height = size + 'px';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  particlesContainer.appendChild(p);
+}
+
+// ===== SCROLL REVEAL =====
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ===== COUNTER ANIMATION =====
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const counter = entry.target; const target = parseInt(counter.dataset.target);
+      const duration = 2000; const start = performance.now();
+      function update(currentTime) {
+        const elapsed = currentTime - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        counter.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update); counterObserver.unobserve(counter);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+
+// ===== FAQ TOGGLE =====
+function toggleFaq(el) {
+  const item = el.parentElement; const isActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+  if (!isActive) item.classList.add('active');
+}
+
+// ===== FORM SUBMIT =====
+
+
+  const form = document.getElementById('ctaForm');
+
+  form.addEventListener('submit', async (e) => {
+
+  e.preventDefault();
+
+  const parentName =
+  document.getElementById('parentName').value.trim();
+
+  const childAge =
+  document.getElementById('childAge').value.trim();
+
+  const phone =
+  document.getElementById('phoneInput').value.trim();
+
+  if (!parentName || !childAge || !phone) {
+
+  alert('Пожалуйста заполните все поля');
+
+  return;
+}
+
+  const btn =
+  document.getElementById('submitBtn');
+
+  btn.disabled = true;
+
+  btn.textContent = 'Отправляем...';
+
+  try {
+
+  await emailjs.send(
+  'service_2stz2w7',
+  'template_oi33foi',
+{
+  parent_name: parentName,
+  child_age: childAge,
+  phone: phone
+}
+  );
+
+  btn.textContent = '✓ Заявка отправлена';
+
+  btn.style.background = '#4A8C5E';
+
+  form.reset();
+
+} catch (error) {
+
+  console.error(error);
+
+  btn.textContent = 'Ошибка отправки';
+
+  btn.style.background = '#c0392b';
+}
+
+  setTimeout(() => {
+
+  btn.disabled = false;
+
+  btn.textContent = 'Записаться';
+
+  btn.style.background = '';
+
+}, 4000);
+
+});
+
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    e.preventDefault(); const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ===== LEGAL MODALS =====
+function openModal(type) {
+  document.getElementById(`modal-${type}`).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(type) {
+  document.getElementById(`modal-${type}`).classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.legal-modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.legal-modal-overlay.active').forEach(m => {
+      m.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }
+});
+</script>
+
+</body>
+</html>
