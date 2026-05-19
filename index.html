@@ -1,1077 +1,1129 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ДикоУмные прогулки — Хранители Планеты | Санкт-Петербург</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --forest: #2D5A3D;
-  --forest-deep: #1A3A2A;
-  --forest-light: #4A8C5E;
-  --sand: #E8D5B7;
-  --sand-light: #F5EDE0;
-  --terracotta: #C4724E;
-  --terracotta-light: #E8956F;
-  --warm-white: #FAF7F2;
-  --warm-gray: #8B8178;
-  --dark: #1A1510;
-  --gold: #C9A96E;
-  --gold-light: #E8D5A0;
-  --moss: #6B8E5A;
-  --sky: #7BA7BC;
-  --shadow: rgba(26, 21, 16, 0.08);
-  --shadow-lg: rgba(26, 21, 16, 0.15);
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: 'Inter', -apple-system, sans-serif; color: var(--dark); background: var(--warm-white); overflow-x: hidden; line-height: 1.6; }
-
-/* ===== PRELOADER ===== */
-.preloader { position: fixed; inset: 0; background: var(--forest-deep); z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease, visibility 0.6s ease; }
-.preloader.hidden { opacity: 0; visibility: hidden; }
-.preloader-logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 2rem; }
-.preloader-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
-.preloader-bar-inner { height: 100%; background: var(--gold); border-radius: 2px; animation: preload 1.5s ease-in-out; }
-@keyframes preload { 0% { width: 0; } 100% { width: 100%; } }
-
-/* ===== NAVIGATION ===== */
-.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; transition: all 0.4s ease; background: transparent; }
-.nav.scrolled { background: rgba(250, 247, 242, 0.98); backdrop-filter: blur(20px); box-shadow: 0 2px 30px var(--shadow); padding: 0.7rem 2rem; }
-.nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: white; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
-.nav.scrolled .nav-logo { color: var(--forest-deep); }
-.nav-logo svg { width: 28px; height: 28px; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em; transition: color 0.3s; position: relative; }
-.nav.scrolled .nav-links a { color: var(--dark); }
-.nav-links a:hover { color: var(--gold); }
-.nav-cta { background: var(--terracotta); color: white !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(196,114,78,0.3); }
-.nav-cta:hover { background: #a85a3a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,114,78,0.4); }
-.nav-mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-.nav-mobile-toggle span { display: block; width: 24px; height: 2px; background: white; margin: 5px 0; transition: all 0.3s ease; }
-.nav.scrolled .nav-mobile-toggle span { background: var(--dark); }
-@media (max-width: 768px) { .nav-links { display: none; } .nav-mobile-toggle { display: block; } }
-
-/* ===== HERO WITH VIDEO ===== */
-.hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; background: var(--forest-deep); }
-.hero-video-container { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
-.hero-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
-.hero-bg-fallback { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(45,90,61,0.9) 0%, rgba(26,58,42,0.85) 100%); z-index: 1; }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26, 58, 42, 0.88) 0%, rgba(45, 90, 61, 0.82) 50%, rgba(26, 58, 42, 0.75) 100%); z-index: 2; }
-.hero-particles { position: absolute; inset: 0; z-index: 3; overflow: hidden; pointer-events: none; }
-.particle { position: absolute; border-radius: 50%; background: rgba(201, 169, 110, 0.2); animation: float-particle linear infinite; }
-@keyframes float-particle { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
-.hero-content { position: relative; z-index: 4; max-width: 1400px; margin: 0 auto; padding: 1rem 2rem 5rem; width: 100%; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center; }
-.hero-text { animation: fadeInUp 1s ease 0.5s both; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-.hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(201, 169, 110, 0.2); border: 2px solid rgba(201, 169, 110, 0.4); padding: 0.6rem 1.4rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--gold); margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; }
-.hero-badge-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; animation: pulse-dot 2s ease infinite; }
-@keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
-.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; color: white; line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-.hero h1 span { color: var(--gold); position: relative; display: inline-block; }
-.hero h1 span::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 4px; background: var(--gold); opacity: 0.4; border-radius: 2px; }
-.hero-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 2.5rem; max-width: 600px; font-weight: 400; }
-.hero-buttons { display: flex; gap: 1.2rem; flex-wrap: wrap; }
-.btn-primary { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--gold); color: var(--dark) !important; padding: 1.2rem 2.4rem; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; border: 2px solid var(--gold); letter-spacing: 0.02em; box-shadow: 0 6px 20px rgba(201,169,110,0.3); }
-.btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(201,169,110,0.4); }
-.btn-secondary { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: white !important; padding: 1.2rem 2.4rem; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease; cursor: pointer; backdrop-filter: blur(10px); }
-.btn-secondary:hover { border-color: var(--gold); color: var(--gold) !important; background: rgba(201, 169, 110, 0.1); transform: translateY(-3px); }
-.hero-visual { position: relative; animation: fadeInUp 1s ease 0.8s both; }
-.hero-image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-.hero-img { border-radius: 20px; overflow: hidden; position: relative; aspect-ratio: 3/4; box-shadow: 0 25px 60px rgba(0,0,0,0.35); }
-.hero-img:nth-child(2) { margin-top: 2.5rem; }
-.hero-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-.hero-img:hover img { transform: scale(1.08); }
-.hero-img-label { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; background: rgba(26, 58, 42, 0.92); backdrop-filter: blur(10px); padding: 0.8rem 1.2rem; border-radius: 12px; color: white; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; text-align: center; }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-
-
-/* ===== SECTION COMMON ===== */
-section { padding: 7rem 2rem; }
-.section-container { max-width: 1200px; margin: 0 auto; }
-.section-header { text-align: center; margin-bottom: 4.5rem; }
-.section-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--forest-light); margin-bottom: 1.2rem; }
-.section-tag-line { width: 40px; height: 3px; background: var(--forest-light); border-radius: 2px; }
-.section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 1.2rem; }
-.section-title span { color: var(--forest); }
-.section-subtitle { font-size: 1.1rem; color: var(--warm-gray); max-width: 650px; margin: 0 auto; line-height: 1.7; font-weight: 400; }
-
-/* ===== MODULAR BLOCK ===== */
-.modular-section { background: var(--sand-light); position: relative; overflow: hidden; }
-.modular-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(45,90,61,0.06) 0%, transparent 70%); border-radius: 50%; }
-.modular-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.8rem; }
-.modular-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); cursor: default; }
-.modular-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px var(--shadow-lg); border-color: rgba(45,90,61,0.1); }
-.modular-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; border-radius: 24px 24px 0 0; }
-.modular-card:nth-child(1)::before { background: var(--forest); }
-.modular-card:nth-child(2)::before { background: var(--terracotta); }
-.modular-card:nth-child(3)::before { background: var(--sky); }
-.modular-card:nth-child(4)::before { background: var(--gold); }
-.modular-card:nth-child(5)::before { background: var(--moss); }
-.modular-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; }
-.modular-card:nth-child(1) .modular-icon { background: rgba(45,90,61,0.12); }
-.modular-card:nth-child(2) .modular-icon { background: rgba(196,114,78,0.12); }
-.modular-card:nth-child(3) .modular-icon { background: rgba(123,167,188,0.12); }
-.modular-card:nth-child(4) .modular-icon { background: rgba(201,169,110,0.12); }
-.modular-card:nth-child(5) .modular-icon { background: rgba(107,142,90,0.12); }
-.modular-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--dark); }
-.modular-card p { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
-.modular-stud { position: absolute; top: -8px; right: 16px; display: flex; gap: 8px; }
-.modular-stud span { width: 12px; height: 12px; border-radius: 50%; opacity: 0.15; }
-.modular-card:nth-child(1) .modular-stud span { background: var(--forest); }
-.modular-card:nth-child(2) .modular-stud span { background: var(--terracotta); }
-.modular-card:nth-child(3) .modular-stud span { background: var(--sky); }
-.modular-card:nth-child(4) .modular-stud span { background: var(--gold); }
-.modular-card:nth-child(5) .modular-stud span { background: var(--moss); }
-
-/* ===== STATS ===== */
-.stats-section { background: var(--forest-deep); position: relative; overflow: hidden; }
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; position: relative; z-index: 1; }
-.stat-item { text-align: center;
-  /*padding: 2.5rem;*/
-  position: relative; }
-.stat-item:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px; background: rgba(255,255,255,0.12); }
-.stat-number { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 0.6rem; }
-.stat-label { font-size: 0.95rem; color: rgba(255,255,255,0.7); font-weight: 500; letter-spacing: 0.02em; }
-
-/* ===== SMALL GROUP SECTION ===== */
-/*.small-group-section { background: var(--warm-white); }*/
-/*.small-group-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }*/
-/*.small-group-image { position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 35px 70px var(--shadow-lg); }*/
-/*.small-group-image img { width: 100%; height: 100%; object-fit: cover; }*/
-/*.small-group-image-badge { position: absolute; bottom: 2rem; left: 2rem; background: rgba(250,247,242,0.98); backdrop-filter: blur(10px); padding: 1rem 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 0.8rem; border: 2px solid rgba(45,90,61,0.1); }*/
-/*.small-group-image-badge-icon { width: 44px; height: 44px; background: var(--forest); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }*/
-/*.small-group-image-badge-text { font-size: 0.85rem; color: var(--warm-gray); }*/
-/*.small-group-image-badge-text strong { display: block; color: var(--dark); font-size: 1.05rem; font-weight: 700; }*/
-/*.small-group-points { list-style: none; display: grid; gap: 1.2rem; }*/
-/*.small-group-points li { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.2rem; background: white; border-radius: 16px; transition: all 0.3s ease; border: 2px solid transparent; }*/
-/*.small-group-points li:hover { border-color: rgba(45,90,61,0.15); box-shadow: 0 10px 30px var(--shadow); transform: translateX(6px); }*/
-/*.small-group-points li .icon { width: 42px; height: 42px; min-width: 42px; background: rgba(45,90,61,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--forest); font-size: 1.1rem; margin-top: 3px; }*/
-/*.small-group-points li h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--dark); }*/
-/*.small-group-points li p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.5; }*/
-.small-group-section {
-  background: var(--warm-white);
-  padding: 5rem 2rem;
-}
-
-.small-group-grid {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 2.5rem;
-  align-items: start;
-}
-
-/* IMAGE */
-
-.small-group-image {
-  position: sticky;
-  top: 120px;
-
-  border-radius: 24px;
-  overflow: hidden;
-  /*aspect-ratio: 4/5;*/
-height: 100%;
-  box-shadow: 0 25px 60px var(--shadow-lg);
-}
-
-.small-group-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.small-group-image-badge {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-
-  background: rgba(250,247,242,0.96);
-  backdrop-filter: blur(10px);
-
-  border-radius: 14px;
-
-  padding: 0.9rem 1rem;
-
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.small-group-image-badge-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-
-  background: var(--forest);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: white;
-  font-size: 1.1rem;
-}
-
-.small-group-image-badge-text {
-  font-size: 0.78rem;
-  color: var(--warm-gray);
-  line-height: 1.3;
-}
-
-.small-group-image-badge-text strong {
-  display: block;
-  color: var(--dark);
-  font-size: 0.95rem;
-}
-
-/* GRID */
-
-.small-group-points {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.9rem;
-}
-
-/* CARD */
-
-.small-group-points li {
-  background: white;
-
-  border-radius: 18px;
-
-  padding: 1rem;
-
-  display: flex;
-  align-items: flex-start;
-  gap: 0.8rem;
-
-  border: 1px solid rgba(0,0,0,0.05);
-
-  transition: all 0.3s ease;
-
-  min-height: 120px;
-}
-
-.small-group-points li:hover {
-  transform: translateY(-4px);
-
-  border-color: rgba(45,90,61,0.15);
-
-  box-shadow: 0 15px 35px var(--shadow);
-}
-
-/* ICON */
-
-.small-group-points li .icon {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-
-  border-radius: 12px;
-
-  background: rgba(45,90,61,0.08);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 1rem;
-}
-
-/* TEXT */
-
-.small-group-points li h4 {
-  font-size: 0.9rem;
-  line-height: 1.3;
-
-  margin-bottom: 0.3rem;
-
-  font-weight: 700;
-
-  color: var(--dark);
-}
-
-.small-group-points li p {
-  font-size: 0.78rem;
-  line-height: 1.45;
-
-  color: var(--warm-gray);
-}
-
-
-
-/* ===== 7 DIRECTIONS ===== */
-.directions-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); position: relative; }
-.directions-map { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.2rem; margin-bottom: 3.5rem; }
-.direction-card { background: white; border-radius: 24px; padding: 2.5rem 1.5rem; text-align: center; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid transparent; cursor: default; }
-.direction-card:hover { transform: translateY(-12px); box-shadow: 0 25px 60px var(--shadow-lg); }
-.direction-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; transition: height 0.3s ease; }
-.direction-card:hover::after { height: 7px; }
-.direction-card:nth-child(1) { --dir-color: #2D5A3D; }
-.direction-card:nth-child(2) { --dir-color: #C4724E; }
-.direction-card:nth-child(3) { --dir-color: #7BA7BC; }
-.direction-card:nth-child(4) { --dir-color: #C9A96E; }
-.direction-card:nth-child(5) { --dir-color: #6B8E5A; }
-.direction-card:nth-child(6) { --dir-color: #8B6F47; }
-.direction-card:nth-child(7) { --dir-color: #5C4033; }
-.direction-card::after { background: var(--dir-color); }
-.direction-card:hover { border-color: var(--dir-color); }
-.direction-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--dir-color); opacity: 0.15; position: absolute; top: 0.8rem; right: 1rem; line-height: 1; }
-.direction-icon { width: 72px; height: 72px; border-radius: 20px; background: rgba(45,90,61,0.08); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 2rem; }
-.direction-card:nth-child(1) .direction-icon { background: rgba(45,90,61,0.12); }
-.direction-card:nth-child(2) .direction-icon { background: rgba(196,114,78,0.12); }
-.direction-card:nth-child(3) .direction-icon { background: rgba(123,167,188,0.12); }
-.direction-card:nth-child(4) .direction-icon { background: rgba(201,169,110,0.12); }
-.direction-card:nth-child(5) .direction-icon { background: rgba(107,142,90,0.12); }
-.direction-card:nth-child(6) .direction-icon { background: rgba(139,111,71,0.12); }
-.direction-card:nth-child(7) .direction-icon { background: rgba(92,64,51,0.12); }
-.direction-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
-.direction-card p { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.5; }
-.directions-note { text-align: center; max-width: 750px; margin: 0 auto; padding: 2rem 2.5rem; background: white; border-radius: 20px; border-left: 5px solid var(--forest); font-size: 0.95rem; color: var(--warm-gray); line-height: 1.7; box-shadow: 0 6px 25px var(--shadow); }
-
-/* ===== CHILD PATH ===== */
-/* ===== CHILD PATH COMPACT ===== */
-.path-section {
-  background: var(--forest-deep);
-  position: relative;
-  overflow: hidden;
-  padding: 5rem 2rem;
-}
-
-.path-section .section-tag {
-  color: var(--gold);
-}
-
-.path-section .section-tag-line {
-  background: var(--gold);
-}
-
-.path-section .section-title {
-  color: white;
-}
-
-.path-section .section-title span {
-  color: var(--gold);
-}
-
-.path-section .section-subtitle {
-  color: rgba(255,255,255,0.65);
-}
-
-/* TIMELINE */
-.path-timeline {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-top: 3rem;
-}
-
-/* CARD */
-.path-step {
-  position: relative;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 1.2rem;
-  transition: all 0.35s ease;
-  height: 190px;
-
-}
-
-.path-step:hover {
-  transform: translateY(-4px);
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(201,169,110,0.3);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-}
-
-/* ICON */
-.path-step-dot {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: rgba(201,169,110,0.12);
-  border: 1px solid rgba(201,169,110,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.path-step:hover .path-step-dot {
-  background: var(--gold);
-  color: var(--dark);
-  transform: scale(1.05);
-}
-
-/* TITLE */
-.path-step-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 0.35rem;
-  line-height: 1.3;
-}
-
-/* TEXT */
-.path-step-desc {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.58);
-  line-height: 1.45;
-}
-
-
-/* ===== MENTOR ===== */
-
-.mentor-section{
-  background:var(--warm-white);
-  padding:5rem 2rem;
-}
-
-.mentor-card{
-  display:grid;
-  grid-template-columns: 340px 1fr;
-
-  gap:2.5rem;
-
-  align-items:center;
-
-  background:white;
-
-  border-radius:28px;
-
-  padding:2rem;
-
-  border:1px solid rgba(0,0,0,.05);
-
-  box-shadow:0 20px 50px var(--shadow);
-}
-
-/* PHOTO */
-
-.mentor-photo{
-  border-radius:22px;
-
-  overflow:hidden;
-
-  aspect-ratio:4/5;
-}
-
-.mentor-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-/* CONTENT */
-
-.mentor-label{
-  display:inline-flex;
-
-  padding:.45rem .9rem;
-
-  border-radius:999px;
-
-  background:rgba(45,90,61,.08);
-
-  color:var(--forest);
-
-  font-size:.75rem;
-  font-weight:700;
-
-  margin-bottom:1rem;
-}
-
-.mentor-name{
-  font-family:'Playfair Display', serif;
-
-  font-size:2rem;
-  line-height:1.1;
-
-  margin-bottom:1.5rem;
-
-  color:var(--dark);
-}
-
-/* INFO GRID */
-
-.mentor-grid{
-  display:grid;
-
-  grid-template-columns:repeat(2,1fr);
-
-  gap:1rem;
-
-  margin-bottom:1.5rem;
-}
-
-.mentor-item{
-  background:var(--sand-light);
-
-  border-radius:18px;
-
-  padding:1rem;
-}
-
-.mentor-item span{
-  display:block;
-
-  font-size:.72rem;
-  font-weight:700;
-
-  text-transform:uppercase;
-  letter-spacing:.08em;
-
-  color:var(--forest);
-
-  margin-bottom:.5rem;
-}
-
-.mentor-item p{
-  font-size:.92rem;
-  line-height:1.5;
-
-  color:var(--dark);
-}
-
-.mentor-description{
-  font-size:.95rem;
-
-  line-height:1.7;
-
-  color:var(--warm-gray);
-
-  max-width:700px;
-}
-
-/* TABLET */
-
-@media(max-width:900px){
-
-  .mentor-card{
-    grid-template-columns:1fr;
-
-    padding:1.5rem;
-  }
-
-  .mentor-photo{
-    max-width:420px;
-    margin:0 auto;
-  }
-
-}
-
-/* MOBILE */
-
-@media(max-width:640px){
-
-  .mentor-section{
-    padding:4rem 1.2rem;
-  }
-
-  .mentor-card{
-    gap:1.3rem;
-
-    border-radius:22px;
-
-    padding:1rem;
-  }
-
-  .mentor-name{
-    font-size:1.5rem;
-
-    margin-bottom:1rem;
-  }
-
-  .mentor-grid{
-    grid-template-columns:1fr;
-
-    gap:.7rem;
-  }
-
-  .mentor-item{
-    border-radius:14px;
-
-    padding:.85rem;
-  }
-
-  .mentor-item p{
-    font-size:.8rem;
-  }
-
-  .mentor-description{
-    font-size:.78rem;
-    line-height:1.5;
-  }
-
-}
-
-/* TABLET */
-
-@media (max-width: 1024px) {
-
-  .small-group-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .small-group-image {
-    position: relative;
-    top: auto;
-
-    max-width: 420px;
-    margin: 0 auto;
-  }
-}
-
-
-@media (max-width: 640px) {
-
-  .small-group-section {
-    padding: 4rem 1.2rem;
-  }
-
-  .small-group-grid {
-    gap: 1.5rem;
-  }
-
-  .small-group-points {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
-
-  .small-group-points li {
-    min-height: 105px;
-
-    padding: 0.8rem;
-
-    border-radius: 14px;
-
-    gap: 0.6rem;
-  }
-
-  .small-group-points li .icon {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-
-    font-size: 0.9rem;
-
-    border-radius: 10px;
-  }
-
-  .small-group-points li h4 {
-    font-size: 0.9rem;
-    line-height: 1.25;
-
-    margin-bottom: 0.2rem;
-  }
-
-  .small-group-points li p {
-    font-size: 0.8rem;
-    line-height: 1.35;
-  }
-
-  .small-group-image-badge {
-    padding: 0.8rem;
-  }
-}
-
-/* DESKTOP COMPACT */
-@media (max-width: 1100px) {
-  .path-timeline {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* MOBILE */
-@media (max-width: 640px) {
-
-  /* скрываем линию только на мобилке */
-  .path-timeline::before {
-    display: none;
-  }
-
-  .path-timeline {
-    gap: 0.8rem;
-    margin-top: 2rem;
-  }
-
-  .path-step {
-    min-height: auto;
-    padding: 1rem;
-    border-radius: 16px;
-  }
-
-  .path-step-dot {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-    margin-bottom: 0.7rem;
-    border-radius: 12px;
-  }
-
-  .path-step-title {
-    font-size: 0.85rem;
-    line-height: 1.25;
-  }
-
-  .path-step-desc {
-    font-size: 0.72rem;
-    line-height: 1.35;
-  }
-}
-/*.path-timeline { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 0; padding: 4rem 0; overflow-x: auto; scrollbar-width: none; }*/
-.path-timeline::-webkit-scrollbar { display: none; }
-/*.path-timeline::before { content: ''; position: absolute; top: 5.5rem; left: 5%; right: 5%; height: 4px; background: linear-gradient(90deg, var(--gold), var(--forest-light), var(--terracotta), var(--gold)); border-radius: 2px; z-index: 1; }*/
-.path-step { flex: 1; text-align: center; position: relative; z-index: 2; min-width: 130px; }
-.path-step-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--forest-deep); border: 3px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 1.3rem; transition: all 0.4s ease; position: relative; }
-.path-step:hover .path-step-dot { background: var(--gold); transform: scale(1.2); box-shadow: 0 0 35px rgba(201,169,110,0.5); }
-.path-step-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.4rem; }
-.path-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.4; max-width: 150px; margin: 0 auto; }
-
-/* ===== 7 STAGES ===== */
-.stages-section { background: var(--warm-white); }
-.stages-timeline { position: relative; max-width: 850px; margin: 0 auto; }
-.stages-timeline::before { content: ''; position: absolute; left: 32px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--forest-light), var(--gold), var(--terracotta)); border-radius: 2px; }
-.stage-item { display: flex; gap: 2.5rem; margin-bottom: 2.5rem; position: relative; padding-left: 0; }
-.stage-number { width: 64px; height: 64px; min-width: 64px; border-radius: 50%; background: white; border: 3px solid var(--forest-light); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--forest); position: relative; z-index: 2; transition: all 0.3s ease; box-shadow: 0 4px 15px var(--shadow); }
-.stage-item:hover .stage-number { background: var(--forest); color: white; border-color: var(--forest); transform: scale(1.15); box-shadow: 0 10px 30px rgba(45,90,61,0.35); }
-.stage-content { background: white; border-radius: 20px; padding: 2rem 2.5rem; flex: 1; border: 2px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
-.stage-item:hover .stage-content { box-shadow: 0 15px 40px var(--shadow); transform: translateX(6px); border-color: rgba(45,90,61,0.1); }
-.stage-content h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
-.stage-content p { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
-
-/* ===== BADGE SYSTEM ===== */
-.badge-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); }
-.badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.8rem; }
-.badge-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); }
-.badge-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px var(--shadow-lg); }
-.badge-visual { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; position: relative; }
-.badge-card:nth-child(1) .badge-visual { background: linear-gradient(135deg, #E8956F, #C4724E); box-shadow: 0 10px 30px rgba(196,114,78,0.35); }
-.badge-card:nth-child(2) .badge-visual { background: linear-gradient(135deg, #7BA7BC, #4A8C9E); box-shadow: 0 10px 30px rgba(123,167,188,0.35); }
-.badge-card:nth-child(3) .badge-visual { background: linear-gradient(135deg, #C9A96E, #A8884D); box-shadow: 0 10px 30px rgba(201,169,110,0.35); }
-.badge-card:nth-child(4) .badge-visual { background: linear-gradient(135deg, #2D5A3D, #1A3A2A); box-shadow: 0 10px 30px rgba(45,90,61,0.35); }
-.badge-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
-.badge-card p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.6; }
-.badge-note { text-align: center; margin-top: 3.5rem; padding: 2rem 2.5rem; background: var(--forest); border-radius: 20px; color: white; font-size: 0.95rem; line-height: 1.7; max-width: 750px; margin-left: auto; margin-right: auto; }
-.badge-note strong { color: var(--gold); }
-
-/* ===== UNIFORM ===== */
-.uniform-section { background: var(--warm-white); overflow: hidden; }
-.uniform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-.uniform-visual { position: relative; }
-.uniform-items { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
-.uniform-item { background: white; border-radius: 24px; padding: 2.5rem; text-align: center; border: 2px solid rgba(0,0,0,0.04); transition: all 0.4s ease; }
-.uniform-item:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: rgba(45,90,61,0.1); }
-.uniform-item-icon { font-size: 3rem; margin-bottom: 1rem; }
-.uniform-item h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--dark); }
-.uniform-item p { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.5; }
-.uniform-text h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 1.2rem; line-height: 1.2; }
-.uniform-text h2 span { color: var(--forest); }
-.uniform-text p { font-size: 1.05rem; color: var(--warm-gray); line-height: 1.7; margin-bottom: 1.8rem; }
-.uniform-note { background: var(--sand-light); padding: 1.5rem 2rem; border-radius: 16px; border-left: 5px solid var(--forest); font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
-
-/* ===== PRICING ===== */
-.pricing-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); }
-.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; align-items: stretch; }
-.pricing-card { background: white; border-radius: 28px; padding: 3rem 2.5rem; position: relative; overflow: hidden; transition: all 0.4s ease; border: 3px solid transparent; display: flex; flex-direction: column; }
-.pricing-card:hover { transform: translateY(-10px); box-shadow: 0 30px 70px var(--shadow-lg); }
-.pricing-card.featured { border-color: var(--forest); background: linear-gradient(180deg, white 0%, rgba(45,90,61,0.03) 100%); }
-.pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--forest); }
-.pricing-badge { position: absolute; top: 1.8rem; right: 1.8rem; background: var(--forest); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
-.pricing-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
-.pricing-desc { font-size: 0.9rem; color: var(--warm-gray); margin-bottom: 1.8rem; line-height: 1.5; }
-.pricing-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--dark); margin-bottom: 0.4rem; }
-.pricing-price span { font-size: 1.1rem; font-weight: 400; color: var(--warm-gray); }
-.pricing-period { font-size: 0.85rem; color: var(--warm-gray); margin-bottom: 2.5rem; font-weight: 500; }
-.pricing-features { list-style: none; margin-bottom: 2.5rem; flex: 1; }
-.pricing-features li { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.6rem 0; font-size: 0.9rem; color: var(--dark); line-height: 1.4; }
-.pricing-features li::before { content: '✓'; color: var(--forest); font-weight: 700; min-width: 20px; font-size: 1.1rem; }
-.pricing-btn { display: block; text-align: center; padding: 1.2rem; border-radius: 16px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer; width: 100%; }
-.pricing-btn-outline { background: transparent; border: 2px solid var(--forest); color: var(--forest) !important; }
-.pricing-btn-outline:hover { background: var(--forest); color: white !important; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(45,90,61,0.25); }
-.pricing-btn-filled { background: var(--forest); color: white !important; }
-.pricing-btn-filled:hover { background: var(--forest-deep); box-shadow: 0 12px 35px rgba(45,90,61,0.35); transform: translateY(-2px); }
-.pricing-btn-gold { background: var(--gold); color: var(--dark) !important; }
-.pricing-btn-gold:hover { background: var(--gold-light); box-shadow: 0 12px 35px rgba(201,169,110,0.35); transform: translateY(-2px); }
-
-/* ===== PARENT BENEFITS ===== */
-.parent-section { background: var(--warm-white); }
-.parent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
-.parent-card { background: white; border-radius: 24px; padding: 2.5rem; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); }
-.parent-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: rgba(45,90,61,0.1); }
-.parent-card-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(45,90,61,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
-.parent-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
-.parent-card p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.6; }
-
-/* ===== FAQ ===== */
-.faq-section { background: var(--sand-light); }
-.faq-list { max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
-.faq-item { background: white; border-radius: 20px; overflow: hidden; border: 2px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
-.faq-item:hover { box-shadow: 0 10px 30px var(--shadow); }
-.faq-question { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; cursor: pointer; gap: 1.2rem; user-select: none; }
-.faq-question h3 { font-size: 1rem; font-weight: 700; color: var(--dark); line-height: 1.4; }
-.faq-toggle { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: rgba(45,90,61,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.3rem; color: var(--forest); font-weight: 300; }
-.faq-item.active .faq-toggle { background: var(--forest); color: white; transform: rotate(45deg); }
-.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
-.faq-item.active .faq-answer { max-height: 350px; }
-.faq-answer-inner { padding: 0 2rem 1.5rem; font-size: 0.95rem; color: var(--warm-gray); line-height: 1.7; }
-
-/* ===== CTA SECTION ===== */
-.cta-section { background: var(--forest-deep); position: relative; overflow: hidden; }
-.cta-inner { position: relative; z-index: 1; text-align: center; max-width: 750px; margin: 0 auto; }
-.cta-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: white; margin-bottom: 1.2rem; line-height: 1.2; }
-.cta-inner h2 span { color: var(--gold); }
-.cta-inner p { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 3rem; line-height: 1.7; }
-/* ===== CTA FORM ===== */
-
-.cta-form{
-  display:grid;
-
-  grid-template-columns:
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ДикоУмные прогулки — Хранители Планеты | Санкт-Петербург</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #2D5A3D;
+      --forest-deep: #1A3A2A;
+      --forest-light: #4A8C5E;
+      --sand: #E8D5B7;
+      --sand-light: #F5EDE0;
+      --terracotta: #C4724E;
+      --terracotta-light: #E8956F;
+      --warm-white: #FAF7F2;
+      --warm-gray: #8B8178;
+      --dark: #1A1510;
+      --gold: #C9A96E;
+      --gold-light: #E8D5A0;
+      --moss: #6B8E5A;
+      --sky: #7BA7BC;
+      --shadow: rgba(26, 21, 16, 0.08);
+      --shadow-lg: rgba(26, 21, 16, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: var(--dark); background: var(--warm-white); overflow-x: hidden; line-height: 1.6; }
+
+    /* ===== PRELOADER ===== */
+    .preloader { position: fixed; inset: 0; background: var(--forest-deep); z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.6s ease, visibility 0.6s ease; }
+    .preloader.hidden { opacity: 0; visibility: hidden; }
+    .preloader-logo { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 2rem; }
+    .preloader-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+    .preloader-bar-inner { height: 100%; background: var(--gold); border-radius: 2px; animation: preload 1.5s ease-in-out; }
+    @keyframes preload { 0% { width: 0; } 100% { width: 100%; } }
+
+    /* ===== NAVIGATION ===== */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; transition: all 0.4s ease; background: transparent; }
+    .nav.scrolled { background: rgba(250, 247, 242, 0.98); backdrop-filter: blur(20px); box-shadow: 0 2px 30px var(--shadow); padding: 0.7rem 2rem; }
+    .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: white; text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+    .nav.scrolled .nav-logo { color: var(--forest-deep); }
+    .nav-logo svg { width: 28px; height: 28px; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em; transition: color 0.3s; position: relative; }
+    .nav.scrolled .nav-links a { color: var(--dark); }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta { background: var(--terracotta); color: white !important; padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(196,114,78,0.3); }
+    .nav-cta:hover { background: #a85a3a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,114,78,0.4); }
+    .nav-mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+    .nav-mobile-toggle span { display: block; width: 24px; height: 2px; background: white; margin: 5px 0; transition: all 0.3s ease; }
+    .nav.scrolled .nav-mobile-toggle span { background: var(--dark); }
+    @media (max-width: 768px) { .nav-links { display: none; } .nav-mobile-toggle { display: block; } }
+
+    /* ===== HERO WITH VIDEO ===== */
+    .hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; background: var(--forest-deep); }
+    .hero-video-container { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+    .hero-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+    .hero-bg-fallback { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(45,90,61,0.9) 0%, rgba(26,58,42,0.85) 100%); z-index: 1; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(26, 58, 42, 0.88) 0%, rgba(45, 90, 61, 0.82) 50%, rgba(26, 58, 42, 0.75) 100%); z-index: 2; }
+    .hero-particles { position: absolute; inset: 0; z-index: 3; overflow: hidden; pointer-events: none; }
+    .particle { position: absolute; border-radius: 50%; background: rgba(201, 169, 110, 0.2); animation: float-particle linear infinite; }
+    @keyframes float-particle { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
+    .hero-content { position: relative; z-index: 4; max-width: 1400px; margin: 0 auto; padding: 1rem 2rem 5rem; width: 100%; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center; }
+    .hero-text { animation: fadeInUp 1s ease 0.5s both; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(201, 169, 110, 0.2); border: 2px solid rgba(201, 169, 110, 0.4); padding: 0.6rem 1.4rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--gold); margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .hero-badge-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; animation: pulse-dot 2s ease infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; color: white; line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+    .hero h1 span { color: var(--gold); position: relative; display: inline-block; }
+    .hero h1 span::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 4px; background: var(--gold); opacity: 0.4; border-radius: 2px; }
+    .hero-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 2.5rem; max-width: 600px; font-weight: 400; }
+    .hero-buttons { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--gold); color: var(--dark) !important; padding: 1.2rem 2.4rem; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; transition: all 0.3s ease; border: 2px solid var(--gold); letter-spacing: 0.02em; box-shadow: 0 6px 20px rgba(201,169,110,0.3); }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(201,169,110,0.4); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 0.6rem; background: transparent; color: white !important; padding: 1.2rem 2.4rem; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease; cursor: pointer; backdrop-filter: blur(10px); }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold) !important; background: rgba(201, 169, 110, 0.1); transform: translateY(-3px); }
+    .hero-visual { position: relative; animation: fadeInUp 1s ease 0.8s both; }
+    .hero-image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .hero-img { border-radius: 20px; overflow: hidden; position: relative; aspect-ratio: 3/4; box-shadow: 0 25px 60px rgba(0,0,0,0.35); }
+    .hero-img:nth-child(2) { margin-top: 2.5rem; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .hero-img:hover img { transform: scale(1.08); }
+    .hero-img-label { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; background: rgba(26, 58, 42, 0.92); backdrop-filter: blur(10px); padding: 0.8rem 1.2rem; border-radius: 12px; color: white; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; text-align: center; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+
+    /* ===== SECTION COMMON ===== */
+    section { padding: 7rem 2rem; }
+    .section-container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 4.5rem; }
+    .section-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--forest-light); margin-bottom: 1.2rem; }
+    .section-tag-line { width: 40px; height: 3px; background: var(--forest-light); border-radius: 2px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 1.2rem; }
+    .section-title span { color: var(--forest); }
+    .section-subtitle { font-size: 1.1rem; color: var(--warm-gray); max-width: 650px; margin: 0 auto; line-height: 1.7; font-weight: 400; }
+
+    /* ===== MODULAR BLOCK ===== */
+    .modular-section { background: var(--sand-light); position: relative; overflow: hidden; }
+    .modular-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(45,90,61,0.06) 0%, transparent 70%); border-radius: 50%; }
+    .modular-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.8rem; }
+    .modular-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); cursor: default; }
+    .modular-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px var(--shadow-lg); border-color: rgba(45,90,61,0.1); }
+    .modular-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; border-radius: 24px 24px 0 0; }
+    .modular-card:nth-child(1)::before { background: var(--forest); }
+    .modular-card:nth-child(2)::before { background: var(--terracotta); }
+    .modular-card:nth-child(3)::before { background: var(--sky); }
+    .modular-card:nth-child(4)::before { background: var(--gold); }
+    .modular-card:nth-child(5)::before { background: var(--moss); }
+    .modular-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; }
+    .modular-card:nth-child(1) .modular-icon { background: rgba(45,90,61,0.12); }
+    .modular-card:nth-child(2) .modular-icon { background: rgba(196,114,78,0.12); }
+    .modular-card:nth-child(3) .modular-icon { background: rgba(123,167,188,0.12); }
+    .modular-card:nth-child(4) .modular-icon { background: rgba(201,169,110,0.12); }
+    .modular-card:nth-child(5) .modular-icon { background: rgba(107,142,90,0.12); }
+    .modular-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--dark); }
+    .modular-card p { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
+    .modular-stud { position: absolute; top: -8px; right: 16px; display: flex; gap: 8px; }
+    .modular-stud span { width: 12px; height: 12px; border-radius: 50%; opacity: 0.15; }
+    .modular-card:nth-child(1) .modular-stud span { background: var(--forest); }
+    .modular-card:nth-child(2) .modular-stud span { background: var(--terracotta); }
+    .modular-card:nth-child(3) .modular-stud span { background: var(--sky); }
+    .modular-card:nth-child(4) .modular-stud span { background: var(--gold); }
+    .modular-card:nth-child(5) .modular-stud span { background: var(--moss); }
+
+    /* ===== STATS ===== */
+    .stats-section { background: var(--forest-deep); position: relative; overflow: hidden; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; position: relative; z-index: 1; }
+    .stat-item { text-align: center;
+      /*padding: 2.5rem;*/
+      position: relative; }
+    .stat-item:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px; background: rgba(255,255,255,0.12); }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 0.6rem; }
+    .stat-label { font-size: 0.95rem; color: rgba(255,255,255,0.7); font-weight: 500; letter-spacing: 0.02em; }
+
+    /* ===== SMALL GROUP SECTION ===== */
+    /*.small-group-section { background: var(--warm-white); }*/
+    /*.small-group-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }*/
+    /*.small-group-image { position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 4/3; box-shadow: 0 35px 70px var(--shadow-lg); }*/
+    /*.small-group-image img { width: 100%; height: 100%; object-fit: cover; }*/
+    /*.small-group-image-badge { position: absolute; bottom: 2rem; left: 2rem; background: rgba(250,247,242,0.98); backdrop-filter: blur(10px); padding: 1rem 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 0.8rem; border: 2px solid rgba(45,90,61,0.1); }*/
+    /*.small-group-image-badge-icon { width: 44px; height: 44px; background: var(--forest); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }*/
+    /*.small-group-image-badge-text { font-size: 0.85rem; color: var(--warm-gray); }*/
+    /*.small-group-image-badge-text strong { display: block; color: var(--dark); font-size: 1.05rem; font-weight: 700; }*/
+    /*.small-group-points { list-style: none; display: grid; gap: 1.2rem; }*/
+    /*.small-group-points li { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.2rem; background: white; border-radius: 16px; transition: all 0.3s ease; border: 2px solid transparent; }*/
+    /*.small-group-points li:hover { border-color: rgba(45,90,61,0.15); box-shadow: 0 10px 30px var(--shadow); transform: translateX(6px); }*/
+    /*.small-group-points li .icon { width: 42px; height: 42px; min-width: 42px; background: rgba(45,90,61,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--forest); font-size: 1.1rem; margin-top: 3px; }*/
+    /*.small-group-points li h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--dark); }*/
+    /*.small-group-points li p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.5; }*/
+    .small-group-section {
+      background: var(--warm-white);
+      padding: 5rem 2rem;
+    }
+
+    .small-group-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* IMAGE */
+
+    .small-group-image {
+      position: sticky;
+      top: 120px;
+
+      border-radius: 24px;
+      overflow: hidden;
+      /*aspect-ratio: 4/5;*/
+      height: 100%;
+      box-shadow: 0 25px 60px var(--shadow-lg);
+    }
+
+    .small-group-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .small-group-image-badge {
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+
+      background: rgba(250,247,242,0.96);
+      backdrop-filter: blur(10px);
+
+      border-radius: 14px;
+
+      padding: 0.9rem 1rem;
+
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .small-group-image-badge-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+
+      background: var(--forest);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .small-group-image-badge-text {
+      font-size: 0.78rem;
+      color: var(--warm-gray);
+      line-height: 1.3;
+    }
+
+    .small-group-image-badge-text strong {
+      display: block;
+      color: var(--dark);
+      font-size: 0.95rem;
+    }
+
+    /* GRID */
+
+    .small-group-points {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+
+    /* CARD */
+
+    .small-group-points li {
+      background: white;
+
+      border-radius: 18px;
+
+      padding: 1rem;
+
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+
+      border: 1px solid rgba(0,0,0,0.05);
+
+      transition: all 0.3s ease;
+
+      min-height: 120px;
+    }
+
+    .small-group-points li:hover {
+      transform: translateY(-4px);
+
+      border-color: rgba(45,90,61,0.15);
+
+      box-shadow: 0 15px 35px var(--shadow);
+    }
+
+    /* ICON */
+
+    .small-group-points li .icon {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+
+      border-radius: 12px;
+
+      background: rgba(45,90,61,0.08);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 1rem;
+    }
+
+    /* TEXT */
+
+    .small-group-points li h4 {
+      font-size: 0.9rem;
+      line-height: 1.3;
+
+      margin-bottom: 0.3rem;
+
+      font-weight: 700;
+
+      color: var(--dark);
+    }
+
+    .small-group-points li p {
+      font-size: 0.78rem;
+      line-height: 1.45;
+
+      color: var(--warm-gray);
+    }
+
+
+
+    /* ===== 7 DIRECTIONS ===== */
+    .directions-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); position: relative; }
+    .directions-map { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.2rem; margin-bottom: 3.5rem; }
+    .direction-card { background: white; border-radius: 24px; padding: 2.5rem 1.5rem; text-align: center; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid transparent; cursor: default; }
+    .direction-card:hover { transform: translateY(-12px); box-shadow: 0 25px 60px var(--shadow-lg); }
+    .direction-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; transition: height 0.3s ease; }
+    .direction-card:hover::after { height: 7px; }
+    .direction-card:nth-child(1) { --dir-color: #2D5A3D; }
+    .direction-card:nth-child(2) { --dir-color: #C4724E; }
+    .direction-card:nth-child(3) { --dir-color: #7BA7BC; }
+    .direction-card:nth-child(4) { --dir-color: #C9A96E; }
+    .direction-card:nth-child(5) { --dir-color: #6B8E5A; }
+    .direction-card:nth-child(6) { --dir-color: #8B6F47; }
+    .direction-card:nth-child(7) { --dir-color: #5C4033; }
+    .direction-card::after { background: var(--dir-color); }
+    .direction-card:hover { border-color: var(--dir-color); }
+    .direction-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--dir-color); opacity: 0.15; position: absolute; top: 0.8rem; right: 1rem; line-height: 1; }
+    .direction-icon { width: 72px; height: 72px; border-radius: 20px; background: rgba(45,90,61,0.08); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 2rem; }
+    .direction-card:nth-child(1) .direction-icon { background: rgba(45,90,61,0.12); }
+    .direction-card:nth-child(2) .direction-icon { background: rgba(196,114,78,0.12); }
+    .direction-card:nth-child(3) .direction-icon { background: rgba(123,167,188,0.12); }
+    .direction-card:nth-child(4) .direction-icon { background: rgba(201,169,110,0.12); }
+    .direction-card:nth-child(5) .direction-icon { background: rgba(107,142,90,0.12); }
+    .direction-card:nth-child(6) .direction-icon { background: rgba(139,111,71,0.12); }
+    .direction-card:nth-child(7) .direction-icon { background: rgba(92,64,51,0.12); }
+    .direction-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
+    .direction-card p { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.5; }
+    .directions-note { text-align: center; max-width: 750px; margin: 0 auto; padding: 2rem 2.5rem; background: white; border-radius: 20px; border-left: 5px solid var(--forest); font-size: 0.95rem; color: var(--warm-gray); line-height: 1.7; box-shadow: 0 6px 25px var(--shadow); }
+
+    /* ===== CHILD PATH ===== */
+    /* ===== CHILD PATH COMPACT ===== */
+    .path-section {
+      background: var(--forest-deep);
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 2rem;
+    }
+
+    .path-section .section-tag {
+      color: var(--gold);
+    }
+
+    .path-section .section-tag-line {
+      background: var(--gold);
+    }
+
+    .path-section .section-title {
+      color: white;
+    }
+
+    .path-section .section-title span {
+      color: var(--gold);
+    }
+
+    .path-section .section-subtitle {
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* TIMELINE */
+    .path-timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    /* CARD */
+    .path-step {
+      position: relative;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1.2rem;
+      transition: all 0.35s ease;
+      height: 190px;
+
+    }
+
+    .path-step:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(201,169,110,0.3);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    /* ICON */
+    .path-step-dot {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(201,169,110,0.12);
+      border: 1px solid rgba(201,169,110,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .path-step:hover .path-step-dot {
+      background: var(--gold);
+      color: var(--dark);
+      transform: scale(1.05);
+    }
+
+    /* TITLE */
+    .path-step-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+    }
+
+    /* TEXT */
+    .path-step-desc {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.58);
+      line-height: 1.45;
+    }
+
+
+    /* ===== MENTOR ===== */
+
+    .mentor-section{
+      background:var(--warm-white);
+      padding:5rem 2rem;
+    }
+
+    .mentor-card{
+      display:grid;
+      grid-template-columns: 340px 1fr;
+
+      gap:2.5rem;
+
+      align-items:center;
+
+      background:white;
+
+      border-radius:28px;
+
+      padding:2rem;
+
+      border:1px solid rgba(0,0,0,.05);
+
+      box-shadow:0 20px 50px var(--shadow);
+    }
+
+    /* PHOTO */
+
+    .mentor-photo{
+      border-radius:22px;
+
+      overflow:hidden;
+
+      aspect-ratio:4/5;
+    }
+
+    .mentor-photo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    /* CONTENT */
+
+    .mentor-label{
+      display:inline-flex;
+
+      padding:.45rem .9rem;
+
+      border-radius:999px;
+
+      background:rgba(45,90,61,.08);
+
+      color:var(--forest);
+
+      font-size:.75rem;
+      font-weight:700;
+
+      margin-bottom:1rem;
+    }
+
+    .mentor-name{
+      font-family:'Playfair Display', serif;
+
+      font-size:2rem;
+      line-height:1.1;
+
+      margin-bottom:1.5rem;
+
+      color:var(--dark);
+    }
+
+    /* INFO GRID */
+
+    .mentor-grid{
+      display:grid;
+
+      grid-template-columns:repeat(2,1fr);
+
+      gap:1rem;
+
+      margin-bottom:1.5rem;
+    }
+
+    .mentor-item{
+      background:var(--sand-light);
+
+      border-radius:18px;
+
+      padding:1rem;
+    }
+
+    .mentor-item span{
+      display:block;
+
+      font-size:.72rem;
+      font-weight:700;
+
+      text-transform:uppercase;
+      letter-spacing:.08em;
+
+      color:var(--forest);
+
+      margin-bottom:.5rem;
+    }
+
+    .mentor-item p{
+      font-size:.92rem;
+      line-height:1.5;
+
+      color:var(--dark);
+    }
+
+    .mentor-description{
+      font-size:.95rem;
+
+      line-height:1.7;
+
+      color:var(--warm-gray);
+
+      max-width:700px;
+    }
+    .cta-checkbox-wrapper {
+      margin-top: 1.2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cta-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 90%;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .cta-checkbox {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      cursor: pointer;
+      accent-color: var(--gold);
+      margin: 0;
+    }
+
+    .cta-checkbox-text {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .cta-privacy-link {
+      color: var(--gold);
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+
+    .cta-privacy-link:hover {
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    /* Адаптив для мобильных */
+    @media (max-width: 640px) {
+      .cta-checkbox-label {
+        font-size: 0.75rem;
+        gap: 0.5rem;
+      }
+      .cta-checkbox-text {
+        font-size: 0.7rem;
+      }
+    }
+    /* TABLET */
+
+    @media(max-width:900px){
+
+      .mentor-card{
+        grid-template-columns:1fr;
+
+        padding:1.5rem;
+      }
+
+      .mentor-photo{
+        max-width:420px;
+        margin:0 auto;
+      }
+
+    }
+
+    /* MOBILE */
+
+    @media(max-width:640px){
+
+      .mentor-section{
+        padding:4rem 1.2rem;
+      }
+
+      .mentor-card{
+        gap:1.3rem;
+
+        border-radius:22px;
+
+        padding:1rem;
+      }
+
+      .mentor-name{
+        font-size:1.5rem;
+
+        margin-bottom:1rem;
+      }
+
+      .mentor-grid{
+        grid-template-columns:1fr;
+
+        gap:.7rem;
+      }
+
+      .mentor-item{
+        border-radius:14px;
+
+        padding:.85rem;
+      }
+
+      .mentor-item p{
+        font-size:.8rem;
+      }
+
+      .mentor-description{
+        font-size:.78rem;
+        line-height:1.5;
+      }
+
+    }
+
+    /* TABLET */
+
+    @media (max-width: 1024px) {
+
+      .small-group-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .small-group-image {
+        position: relative;
+        top: auto;
+
+        max-width: 420px;
+        margin: 0 auto;
+      }
+    }
+
+
+    @media (max-width: 640px) {
+
+      .small-group-section {
+        padding: 4rem 1.2rem;
+      }
+
+      .small-group-grid {
+        gap: 1.5rem;
+      }
+
+      .small-group-points {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+      }
+
+      .small-group-points li {
+        min-height: 105px;
+
+        padding: 0.8rem;
+
+        border-radius: 14px;
+
+        gap: 0.6rem;
+      }
+
+      .small-group-points li .icon {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+
+        font-size: 0.9rem;
+
+        border-radius: 10px;
+      }
+
+      .small-group-points li h4 {
+        font-size: 0.9rem;
+        line-height: 1.25;
+
+        margin-bottom: 0.2rem;
+      }
+
+      .small-group-points li p {
+        font-size: 0.8rem;
+        line-height: 1.35;
+      }
+
+      .small-group-image-badge {
+        padding: 0.8rem;
+      }
+    }
+
+    /* DESKTOP COMPACT */
+    @media (max-width: 1100px) {
+      .path-timeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+
+      /* скрываем линию только на мобилке */
+      .path-timeline::before {
+        display: none;
+      }
+
+      .path-timeline {
+        gap: 0.8rem;
+        margin-top: 2rem;
+      }
+
+      .path-step {
+        min-height: auto;
+        padding: 1rem;
+        border-radius: 16px;
+      }
+
+      .path-step-dot {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin-bottom: 0.7rem;
+        border-radius: 12px;
+      }
+
+      .path-step-title {
+        font-size: 0.85rem;
+        line-height: 1.25;
+      }
+
+      .path-step-desc {
+        font-size: 0.72rem;
+        line-height: 1.35;
+      }
+    }
+    /*.path-timeline { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 0; padding: 4rem 0; overflow-x: auto; scrollbar-width: none; }*/
+    .path-timeline::-webkit-scrollbar { display: none; }
+    /*.path-timeline::before { content: ''; position: absolute; top: 5.5rem; left: 5%; right: 5%; height: 4px; background: linear-gradient(90deg, var(--gold), var(--forest-light), var(--terracotta), var(--gold)); border-radius: 2px; z-index: 1; }*/
+    .path-step { flex: 1; text-align: center; position: relative; z-index: 2; min-width: 130px; }
+    .path-step-dot { width: 56px; height: 56px; border-radius: 50%; background: var(--forest-deep); border: 3px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-size: 1.3rem; transition: all 0.4s ease; position: relative; }
+    .path-step:hover .path-step-dot { background: var(--gold); transform: scale(1.2); box-shadow: 0 0 35px rgba(201,169,110,0.5); }
+    .path-step-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.4rem; }
+    .path-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.4; max-width: 150px; margin: 0 auto; }
+
+    /* ===== 7 STAGES ===== */
+    .stages-section { background: var(--warm-white); }
+    .stages-timeline { position: relative; max-width: 850px; margin: 0 auto; }
+    .stages-timeline::before { content: ''; position: absolute; left: 32px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--forest-light), var(--gold), var(--terracotta)); border-radius: 2px; }
+    .stage-item { display: flex; gap: 2.5rem; margin-bottom: 2.5rem; position: relative; padding-left: 0; }
+    .stage-number { width: 64px; height: 64px; min-width: 64px; border-radius: 50%; background: white; border: 3px solid var(--forest-light); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--forest); position: relative; z-index: 2; transition: all 0.3s ease; box-shadow: 0 4px 15px var(--shadow); }
+    .stage-item:hover .stage-number { background: var(--forest); color: white; border-color: var(--forest); transform: scale(1.15); box-shadow: 0 10px 30px rgba(45,90,61,0.35); }
+    .stage-content { background: white; border-radius: 20px; padding: 2rem 2.5rem; flex: 1; border: 2px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+    .stage-item:hover .stage-content { box-shadow: 0 15px 40px var(--shadow); transform: translateX(6px); border-color: rgba(45,90,61,0.1); }
+    .stage-content h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+    .stage-content p { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
+
+    /* ===== BADGE SYSTEM ===== */
+    .badge-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); }
+    .badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.8rem; }
+    .badge-card { background: white; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; position: relative; overflow: hidden; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); }
+    .badge-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px var(--shadow-lg); }
+    .badge-visual { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; position: relative; }
+    .badge-card:nth-child(1) .badge-visual { background: linear-gradient(135deg, #E8956F, #C4724E); box-shadow: 0 10px 30px rgba(196,114,78,0.35); }
+    .badge-card:nth-child(2) .badge-visual { background: linear-gradient(135deg, #7BA7BC, #4A8C9E); box-shadow: 0 10px 30px rgba(123,167,188,0.35); }
+    .badge-card:nth-child(3) .badge-visual { background: linear-gradient(135deg, #C9A96E, #A8884D); box-shadow: 0 10px 30px rgba(201,169,110,0.35); }
+    .badge-card:nth-child(4) .badge-visual { background: linear-gradient(135deg, #2D5A3D, #1A3A2A); box-shadow: 0 10px 30px rgba(45,90,61,0.35); }
+    .badge-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
+    .badge-card p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.6; }
+    .badge-note { text-align: center; margin-top: 3.5rem; padding: 2rem 2.5rem; background: var(--forest); border-radius: 20px; color: white; font-size: 0.95rem; line-height: 1.7; max-width: 750px; margin-left: auto; margin-right: auto; }
+    .badge-note strong { color: var(--gold); }
+
+    /* ===== UNIFORM ===== */
+    .uniform-section { background: var(--warm-white); overflow: hidden; }
+    .uniform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .uniform-visual { position: relative; }
+    .uniform-items { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+    .uniform-item { background: white; border-radius: 24px; padding: 2.5rem; text-align: center; border: 2px solid rgba(0,0,0,0.04); transition: all 0.4s ease; }
+    .uniform-item:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: rgba(45,90,61,0.1); }
+    .uniform-item-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .uniform-item h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--dark); }
+    .uniform-item p { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.5; }
+    .uniform-text h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 1.2rem; line-height: 1.2; }
+    .uniform-text h2 span { color: var(--forest); }
+    .uniform-text p { font-size: 1.05rem; color: var(--warm-gray); line-height: 1.7; margin-bottom: 1.8rem; }
+    .uniform-note { background: var(--sand-light); padding: 1.5rem 2rem; border-radius: 16px; border-left: 5px solid var(--forest); font-size: 0.95rem; color: var(--warm-gray); line-height: 1.6; }
+
+    /* ===== PRICING ===== */
+    .pricing-section { background: linear-gradient(180deg, var(--sand-light) 0%, var(--warm-white) 100%); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; align-items: stretch; }
+    .pricing-card { background: white; border-radius: 28px; padding: 3rem 2.5rem; position: relative; overflow: hidden; transition: all 0.4s ease; border: 3px solid transparent; display: flex; flex-direction: column; }
+    .pricing-card:hover { transform: translateY(-10px); box-shadow: 0 30px 70px var(--shadow-lg); }
+    .pricing-card.featured { border-color: var(--forest); background: linear-gradient(180deg, white 0%, rgba(45,90,61,0.03) 100%); }
+    .pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--forest); }
+    .pricing-badge { position: absolute; top: 1.8rem; right: 1.8rem; background: var(--forest); color: white; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .pricing-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--dark); }
+    .pricing-desc { font-size: 0.9rem; color: var(--warm-gray); margin-bottom: 1.8rem; line-height: 1.5; }
+    .pricing-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--dark); margin-bottom: 0.4rem; }
+    .pricing-price span { font-size: 1.1rem; font-weight: 400; color: var(--warm-gray); }
+    .pricing-period { font-size: 0.85rem; color: var(--warm-gray); margin-bottom: 2.5rem; font-weight: 500; }
+    .pricing-features { list-style: none; margin-bottom: 2.5rem; flex: 1; }
+    .pricing-features li { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.6rem 0; font-size: 0.9rem; color: var(--dark); line-height: 1.4; }
+    .pricing-features li::before { content: '✓'; color: var(--forest); font-weight: 700; min-width: 20px; font-size: 1.1rem; }
+    .pricing-btn { display: block; text-align: center; padding: 1.2rem; border-radius: 16px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer; width: 100%; }
+    .pricing-btn-outline { background: transparent; border: 2px solid var(--forest); color: var(--forest) !important; }
+    .pricing-btn-outline:hover { background: var(--forest); color: white !important; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(45,90,61,0.25); }
+    .pricing-btn-filled { background: var(--forest); color: white !important; }
+    .pricing-btn-filled:hover { background: var(--forest-deep); box-shadow: 0 12px 35px rgba(45,90,61,0.35); transform: translateY(-2px); }
+    .pricing-btn-gold { background: var(--gold); color: var(--dark) !important; }
+    .pricing-btn-gold:hover { background: var(--gold-light); box-shadow: 0 12px 35px rgba(201,169,110,0.35); transform: translateY(-2px); }
+
+    /* ===== PARENT BENEFITS ===== */
+    .parent-section { background: var(--warm-white); }
+    .parent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+    .parent-card { background: white; border-radius: 24px; padding: 2.5rem; transition: all 0.4s ease; border: 2px solid rgba(0,0,0,0.04); }
+    .parent-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px var(--shadow); border-color: rgba(45,90,61,0.1); }
+    .parent-card-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(45,90,61,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
+    .parent-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+    .parent-card p { font-size: 0.9rem; color: var(--warm-gray); line-height: 1.6; }
+
+    /* ===== FAQ ===== */
+    .faq-section { background: var(--sand-light); }
+    .faq-list { max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+    .faq-item { background: white; border-radius: 20px; overflow: hidden; border: 2px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+    .faq-item:hover { box-shadow: 0 10px 30px var(--shadow); }
+    .faq-question { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; cursor: pointer; gap: 1.2rem; user-select: none; }
+    .faq-question h3 { font-size: 1rem; font-weight: 700; color: var(--dark); line-height: 1.4; }
+    .faq-toggle { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: rgba(45,90,61,0.1); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.3rem; color: var(--forest); font-weight: 300; }
+    .faq-item.active .faq-toggle { background: var(--forest); color: white; transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+    .faq-item.active .faq-answer { max-height: 350px; }
+    .faq-answer-inner { padding: 0 2rem 1.5rem; font-size: 0.95rem; color: var(--warm-gray); line-height: 1.7; }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section { background: var(--forest-deep); position: relative; overflow: hidden; }
+    .cta-inner { position: relative; z-index: 1; text-align: center; max-width: 750px; margin: 0 auto; }
+    .cta-inner h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: white; margin-bottom: 1.2rem; line-height: 1.2; }
+    .cta-inner h2 span { color: var(--gold); }
+    .cta-inner p { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 3rem; line-height: 1.7; }
+    /* ===== CTA FORM ===== */
+
+    .cta-form{
+      display:grid;
+
+      grid-template-columns:
     1fr
     180px
     1fr
     auto;
 
-  gap:1rem;
+      gap:1rem;
 
-  max-width:1000px;
+      max-width:1000px;
 
-  margin:0 auto 1.2rem;
-}
+      margin:0 auto 1.2rem;
+    }
 
-.cta-form input{
-  width:100%;
+    .cta-form input{
+      width:100%;
 
-  padding:1.1rem 1.4rem;
+      padding:1.1rem 1.4rem;
 
-  border-radius:18px;
+      border-radius:18px;
 
-  border:2px solid rgba(255,255,255,0.12);
+      border:2px solid rgba(255,255,255,0.12);
 
-  background:rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.08);
 
-  backdrop-filter:blur(10px);
+      backdrop-filter:blur(10px);
 
-  color:white;
+      color:white;
 
-  font-size:.95rem;
+      font-size:.95rem;
 
-  outline:none;
+      outline:none;
 
-  transition:all .3s ease;
-}
+      transition:all .3s ease;
+    }
 
-.cta-form input:focus{
-  border-color:var(--gold);
+    .cta-form input:focus{
+      border-color:var(--gold);
 
-  background:rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.12);
 
-  box-shadow:0 0 0 4px rgba(201,169,110,.12);
-}
+      box-shadow:0 0 0 4px rgba(201,169,110,.12);
+    }
 
-.cta-form input::placeholder{
-  color:rgba(255,255,255,.45);
-}
+    .cta-form input::placeholder{
+      color:rgba(255,255,255,.45);
+    }
 
-.cta-form button{
-  padding:1.1rem 2rem;
+    .cta-form button{
+      padding:1.1rem 2rem;
 
-  border:none;
+      border:none;
 
-  border-radius:18px;
+      border-radius:18px;
 
-  background:linear-gradient(
-          135deg,
-          var(--gold-light),
-          var(--gold)
-  );
+      background:linear-gradient(
+              135deg,
+              var(--gold-light),
+              var(--gold)
+      );
 
-  color:var(--dark);
+      color:var(--dark);
 
-  font-weight:700;
+      font-weight:700;
 
-  cursor:pointer;
+      cursor:pointer;
 
-  transition:all .3s ease;
+      transition:all .3s ease;
 
-  white-space:nowrap;
-}
+      white-space:nowrap;
+    }
 
-.cta-form button:hover{
-  transform:translateY(-3px);
+    .cta-form button:hover{
+      transform:translateY(-3px);
 
-  box-shadow:
-          0 15px 35px rgba(201,169,110,.35);
-}
+      box-shadow:
+              0 15px 35px rgba(201,169,110,.35);
+    }
 
-/* TABLET */
+    /* TABLET */
 
-@media(max-width:900px){
+    @media(max-width:900px){
 
-  .cta-form{
-    grid-template-columns:1fr 1fr;
-  }
+      .cta-form{
+        grid-template-columns:1fr 1fr;
+      }
 
-}
+    }
 
-/* MOBILE */
+    /* MOBILE */
 
-@media(max-width:640px){
+    @media(max-width:640px){
 
-  .cta-form{
-    grid-template-columns:1fr;
+      .cta-form{
+        grid-template-columns:1fr;
 
-    gap:.8rem;
-  }
+        gap:.8rem;
+      }
 
-  .cta-form input,
-  .cta-form button{
-    border-radius:16px;
+      .cta-form input,
+      .cta-form button{
+        border-radius:16px;
 
-    padding:1rem 1.1rem;
+        padding:1rem 1.1rem;
 
-    font-size:.9rem;
-  }
+        font-size:.9rem;
+      }
 
-}
-.cta-note { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+    }
+    .cta-note { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
 
-/* ===== FOOTER ===== */
-.footer { background: #1A1714; padding: 4rem 2rem; text-align: center; }
-.footer-inner { max-width: 1200px; margin: 0 auto; }
-.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); margin-bottom: 1.2rem; }
-.footer-text { font-size: 0.9rem; color: rgba(255,255,255,0.4); line-height: 1.6; margin-bottom: 2rem; }
-.footer-links { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
-.footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500; }
-.footer-links a:hover { color: var(--gold); }
-.footer-legal { margin-top: 2.5rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
-.footer-legal a { color: rgba(255,255,255,0.4); font-size: 0.8rem; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.2); transition: all 0.3s; }
-.footer-legal a:hover { color: var(--gold); text-decoration-color: var(--gold); }
-.footer-locations { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
-.footer-locations h4 { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 600; }
-.footer-locations p { color: rgba(255,255,255,0.35); font-size: 0.8rem; line-height: 1.6; }
+    /* ===== FOOTER ===== */
+    .footer { background: #1A1714; padding: 4rem 2rem; text-align: center; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); margin-bottom: 1.2rem; }
+    .footer-text { font-size: 0.9rem; color: rgba(255,255,255,0.4); line-height: 1.6; margin-bottom: 2rem; }
+    .footer-links { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-legal { margin-top: 2.5rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+    .footer-legal a { color: rgba(255,255,255,0.4); font-size: 0.8rem; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.2); transition: all 0.3s; }
+    .footer-legal a:hover { color: var(--gold); text-decoration-color: var(--gold); }
+    .footer-locations { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .footer-locations h4 { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 600; }
+    .footer-locations p { color: rgba(255,255,255,0.35); font-size: 0.8rem; line-height: 1.6; }
 
-/* ===== LEGAL MODALS ===== */
-.legal-modal-overlay { position: fixed; inset: 0; background: rgba(26, 23, 20, 0.9); backdrop-filter: blur(10px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-.legal-modal-overlay.active { opacity: 1; visibility: visible; }
-.legal-modal { background: white; width: 100%; max-width: 950px; max-height: 85vh; border-radius: 28px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.5); transform: translateY(30px) scale(0.97); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.legal-modal-overlay.active .legal-modal { transform: translateY(0) scale(1); }
-.legal-modal-header { padding: 2rem 2.5rem; border-bottom: 2px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; background: var(--warm-white); }
-.legal-modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--dark); }
-.legal-modal-close { width: 42px; height: 42px; border-radius: 50%; background: rgba(42,37,32,0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.3rem; color: var(--warm-gray); transition: all 0.2s; }
-.legal-modal-close:hover { background: rgba(42,37,32,0.15); color: var(--dark); transform: rotate(90deg); }
-.legal-modal-body { padding: 2.5rem; overflow-y: auto; flex: 1; }
-.legal-modal-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin: 2rem 0 1rem; color: var(--forest); font-weight: 700; }
-.legal-modal-body h3:first-child { margin-top: 0; }
-.legal-modal-body p, .legal-modal-body li { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.8; margin-bottom: 0.8rem; }
-.legal-modal-body ul { padding-left: 1.5rem; margin-bottom: 1.2rem; }
-.legal-modal-body a { color: var(--forest); text-decoration: underline; }
-.legal-modal-body a:hover { color: var(--gold); }
-.legal-modal-body .highlight { background: var(--sand-light); padding: 1.5rem; border-radius: 14px; border-left: 4px solid var(--forest); font-style: italic; }
+    /* ===== LEGAL MODALS ===== */
+    .legal-modal-overlay { position: fixed; inset: 0; background: rgba(26, 23, 20, 0.9); backdrop-filter: blur(10px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .legal-modal-overlay.active { opacity: 1; visibility: visible; }
+    .legal-modal { background: white; width: 100%; max-width: 950px; max-height: 85vh; border-radius: 28px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.5); transform: translateY(30px) scale(0.97); transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .legal-modal-overlay.active .legal-modal { transform: translateY(0) scale(1); }
+    .legal-modal-header { padding: 2rem 2.5rem; border-bottom: 2px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; background: var(--warm-white); }
+    .legal-modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+    .legal-modal-close { width: 42px; height: 42px; border-radius: 50%; background: rgba(42,37,32,0.08); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.3rem; color: var(--warm-gray); transition: all 0.2s; }
+    .legal-modal-close:hover { background: rgba(42,37,32,0.15); color: var(--dark); transform: rotate(90deg); }
+    .legal-modal-body { padding: 2.5rem; overflow-y: auto; flex: 1; }
+    .legal-modal-body h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin: 2rem 0 1rem; color: var(--forest); font-weight: 700; }
+    .legal-modal-body h3:first-child { margin-top: 0; }
+    .legal-modal-body p, .legal-modal-body li { font-size: 0.95rem; color: var(--warm-gray); line-height: 1.8; margin-bottom: 0.8rem; }
+    .legal-modal-body ul { padding-left: 1.5rem; margin-bottom: 1.2rem; }
+    .legal-modal-body a { color: var(--forest); text-decoration: underline; }
+    .legal-modal-body a:hover { color: var(--gold); }
+    .legal-modal-body .highlight { background: var(--sand-light); padding: 1.5rem; border-radius: 14px; border-left: 4px solid var(--forest); font-style: italic; }
 
-@media (max-width: 768px) { .legal-modal { max-height: 90vh; border-radius: 20px; } .legal-modal-header { padding: 1.5rem; } .legal-modal-body { padding: 1.5rem; } }
+    @media (max-width: 768px) { .legal-modal { max-height: 90vh; border-radius: 20px; } .legal-modal-header { padding: 1.5rem; } .legal-modal-body { padding: 1.5rem; } }
 
-/* ===== SCROLL ANIMATIONS ===== */
-.reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-.reveal-delay-5 { transition-delay: 0.5s; }
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1024px) {
-  .hero-content { grid-template-columns: 1fr; gap: 3rem; }
-  .hero-visual { max-width: 550px; margin: 0 auto; }
-  .directions-map { grid-template-columns: repeat(4, 1fr); }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .stat-item:nth-child(2)::after { display: none; }
-  .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
-  /*.small-group-grid, .uniform-grid { grid-template-columns: 1fr; }*/
-  .uniform-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 768px) {
-  .hero h1 { font-size: 2.2rem; }
-  .hero-subtitle { font-size: 1rem; }
-  .hero-buttons { flex-direction: column; }
-  .hero-buttons a { text-align: center; justify-content: center; }
-  /*.modular-grid { grid-template-columns: 1fr; }*/
-  .directions-map { grid-template-columns: repeat(2, 1fr); }
-  .direction-card:last-child { grid-column: span 2; max-width: 60%; margin: 0 auto; }
-  .stats-grid { grid-template-columns: 1fr 1fr; }
-  .badge-grid { grid-template-columns: 1fr 1fr; }
-  .parent-grid { grid-template-columns: 1fr; }
-  .cta-form { flex-direction: column; }
-  .uniform-items { grid-template-columns: 1fr 1fr; }
-  /* MODULAR GRID MOBILE 2 COLS */
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { max-width: 550px; margin: 0 auto; }
+      .directions-map { grid-template-columns: repeat(4, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2)::after { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+      /*.small-group-grid, .uniform-grid { grid-template-columns: 1fr; }*/
+      .uniform-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .hero-subtitle { font-size: 1rem; }
+      .hero-buttons { flex-direction: column; }
+      .hero-buttons a { text-align: center; justify-content: center; }
+      /*.modular-grid { grid-template-columns: 1fr; }*/
+      .directions-map { grid-template-columns: repeat(2, 1fr); }
+      .direction-card:last-child { grid-column: span 2; max-width: 60%; margin: 0 auto; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .badge-grid { grid-template-columns: 1fr 1fr; }
+      .parent-grid { grid-template-columns: 1fr; }
+      .cta-form { flex-direction: column; }
+      .uniform-items { grid-template-columns: 1fr 1fr; }
+      /* MODULAR GRID MOBILE 2 COLS */
 
-  .modular-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.7rem;
-  }
+      .modular-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.7rem;
+      }
 
-  .modular-card {
-    padding: 1rem;
+      .modular-card {
+        padding: 1rem;
 
-    border-radius: 16px;
+        border-radius: 16px;
 
-    min-height: 170px;
-  }
+        min-height: 170px;
+      }
 
-  .modular-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    margin-bottom: 0.7rem;
-  }
+      .modular-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        margin-bottom: 0.7rem;
+      }
 
-  .modular-card h3 {
-    font-size: 1rem;
-    line-height: 1.25;
-    margin-bottom: 0.35rem;
-  }
+      .modular-card h3 {
+        font-size: 1rem;
+        line-height: 1.25;
+        margin-bottom: 0.35rem;
+      }
 
-  .modular-card p {
-    font-size: 0.8rem;
-    line-height: 1.4;
-  }
+      .modular-card p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
 
-  .modular-stud {
-    right: 10px;
-  }
+      .modular-stud {
+        right: 10px;
+      }
 
-  .modular-stud span {
-    width: 8px;
-    height: 8px;
-  }
-}
-@media (max-width: 480px) {
-  section { padding: 5rem 1.5rem; }
-  /*.directions-map { grid-template-columns: 1fr; }*/
-  .direction-card:last-child { grid-column: auto; max-width: 100%; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .stat-item::after { display: none !important; }
-  .badge-grid { grid-template-columns: 1fr; }
-  .hero-image-grid { grid-template-columns: 1fr; }
-  .hero-img:nth-child(2) { margin-top: 0; }
-  .uniform-items { grid-template-columns: 1fr; }
-}
-</style>
+      .modular-stud span {
+        width: 8px;
+        height: 8px;
+      }
+    }
+    @media (max-width: 480px) {
+      section { padding: 5rem 1.5rem; }
+      /*.directions-map { grid-template-columns: 1fr; }*/
+      .direction-card:last-child { grid-column: auto; max-width: 100%; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-item::after { display: none !important; }
+      .badge-grid { grid-template-columns: 1fr; }
+      .hero-image-grid { grid-template-columns: 1fr; }
+      .hero-img:nth-child(2) { margin-top: 0; }
+      .uniform-items { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
@@ -1166,8 +1218,8 @@ height: 100%;
     <div class="small-group-grid">
       <div class="small-group-image reveal"><img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&q=80" alt="Педагог с малой группой детей в Приморском районе" loading="lazy"><div class="small-group-image-badge"><div class="small-group-image-badge-icon">👁️</div><div class="small-group-image-badge-text"><strong>Видим каждого</strong>5–7 детей в отряде</div></div></div>
       <ul class="small-group-points">
-<!--        <li class="reveal reveal-delay-1"><div class="icon">👁️</div><div><h4>Педагог видит каждого ребёнка</h4><p>Не «управляет толпой», а сопровождает каждого.</p></div></li>-->
-<!--        <li class="reveal reveal-delay-2"><div class="icon">🔇</div><div><h4>Ребёнок не растворяется в шуме</h4><p>Тишина и пространство для внутреннего голоса.</p></div></li>-->
+        <!--        <li class="reveal reveal-delay-1"><div class="icon">👁️</div><div><h4>Педагог видит каждого ребёнка</h4><p>Не «управляет толпой», а сопровождает каждого.</p></div></li>-->
+        <!--        <li class="reveal reveal-delay-2"><div class="icon">🔇</div><div><h4>Ребёнок не растворяется в шуме</h4><p>Тишина и пространство для внутреннего голоса.</p></div></li>-->
         <li class="reveal reveal-delay-3"><div class="icon">💎</div><div><h4>Проще заметить сильные стороны</h4><p>Каждый талант получает пространство для проявления.</p></div></li>
         <li class="reveal reveal-delay-4"><div class="icon">🤗</div><div><h4>Легче поддержать тревожного ребёнка</h4><p>Без давления, в безопасной камерной среде.</p></div></li>
         <li class="reveal reveal-delay-5"><div class="icon">💬</div><div><h4>Больше настоящего взаимодействия</h4><p>Каждый голос слышен. Каждый важен.</p></div></li>
@@ -1239,13 +1291,13 @@ height: 100%;
 
       <div class="mentor-photo">
         <img src="https://res.cloudinary.com/djscctvoj/image/upload/v1778794199/m6-IGeXb9JoGYab85MIIKGF6xlG1Fdd7jkKrc3M1RMEhWD42ebFvBjSb0dXReLMmYrXHjayNvSatB2Ls1womup1b_q8rmc5.jpg"
-                alt="Педагог клуба">
+             alt="Педагог клуба">
       </div>
 
       <div class="mentor-content">
 
         <div class="mentor-label">
-          Руководитель-педагог
+          Автор системы  развития детей
         </div>
 
         <h3 class="mentor-name">
@@ -1255,26 +1307,25 @@ height: 100%;
         <div class="mentor-grid">
 
           <div class="mentor-item">
-            <span>Образование</span>
+            <span></span>
             <p>
-              РГПУ им. Герцена<br>
-              Педагог-психолог
+              Педагог-психолог | Специалист по индивидуальной траектории развития ребёнка | Семейный тьютор | Руководитель АНО «Семейный путь»
             </p>
           </div>
           <div class="mentor-item">
             <span>Стаж</span>
             <p>
-              Более 10 лет<br>
-              работы с детьми
+              Более 11 лет<br>
+              работы с детьми и семьями.<br>
+              Высшая квалификационная категория.
             </p>
           </div>
         </div>
+        <p></p>
+
         <div class="mentor-description">
-          Специалист по детскому развитию,
-          семейной психологии и работе
-          с малыми группами. Создаёт среду,
-          где ребёнок раскрывается через
-          природу, исследование и живой опыт.
+          Основатель проекта Family Guide -  навигатор развития семьи. <br>
+          Мне важно сохранить у ребёнка живой интерес к миру, способность исследовать, создавать, двигаться, чувствовать и задавать вопросы.
         </div>
       </div>
     </div>
@@ -1325,7 +1376,7 @@ height: 100%;
       </div>
       <div class="uniform-text reveal reveal-delay-2">
         <h2>Форма — не мерч, а <span>знак принадлежности</span></h2>
-        <p>Жилет + панама + стартовый шеврон. Это не покупка, а включение в клубный маршрут. Форма появляется после того, как ребёнок становится частью отряда. Приобретается отдельно, стоимость: 5000р.</p>
+        <p>Жилет + панама + стартовый шеврон. Это не покупка, а включение в клубный маршрут. Форма появляется после того, как ребёнок становится частью отряда. Приобретается отдельно, стоимость: 4500р.</p>
         <p>Шевроны собираются постепенно. Каждый — результат реального навыка, а не покупки.</p>
         <div class="uniform-note">💡 Форма выдаётся после включения в клубный маршрут. Это знак: «Ты — часть чего-то настоящего».</div>
       </div>
@@ -1338,9 +1389,49 @@ height: 100%;
   <div class="section-container">
     <div class="section-header reveal"><div class="section-tag"><span class="section-tag-line"></span>Маршруты<span class="section-tag-line"></span></div><h2 class="section-title">Выберите <span>свой маршрут</span></h2><p class="section-subtitle">Первый шаг — бесплатный. Дальше — по мере роста ребёнка.</p></div>
     <div class="pricing-grid">
-      <div class="pricing-card reveal reveal-delay-1"><div class="pricing-name">Первый шаг</div><div class="pricing-desc">Пробная экспедиция — чтобы почувствовать формат.</div><div class="pricing-price">0 ₽</div><div class="pricing-period">1 пробная экспедиция</div><ul class="pricing-features"><li>1 экспедиция на природе</li><li>Камерный отряд 5–7 детей</li><li>Знакомство с методикой</li><li>Первая наклейка в дневник</li><li>Без обязательств</li></ul><a href="#cta" class="pricing-btn pricing-btn-outline">Попробовать бесплатно</a></div>
-      <div class="pricing-card featured reveal reveal-delay-2"><div class="pricing-badge">Популярный</div><div class="pricing-name">Стартовый маршрут</div><div class="pricing-desc">Первые серьёзные шаги: 4 экспедиции, дневник, первые наблюдения.</div><div class="pricing-price">6 900 ₽</div><div class="pricing-period">4 экспедиции</div><ul class="pricing-features"><li>4 экспедиции на природе</li><li>Камерный отряд 5–7 детей</li><li>Дневник наблюдений</li><li>Наклейки после каждой прогулки</li><li>Первые наблюдения педагога</li><li>Доступ в клубный Telegram</li></ul><a href="#cta" class="pricing-btn pricing-btn-filled">Начать маршрут</a></div>
-      <div class="pricing-card reveal reveal-delay-3"><div class="pricing-badge">Полный путь</div><div class="pricing-name">Клубный маршрут</div><div class="pricing-desc">Постоянный отряд, шевроны, карта пути и форма Хранителя.</div><div class="pricing-price">11 900 ₽</div><div class="pricing-period">8 экспедиций</div><ul class="pricing-features"><li>8 экспедиций на природе</li><li>Постоянный отряд 5–7 детей</li><li>Мини-динамика развития</li><li>Приглашение к посвящению</li><li>Доступ к шевронам и карте пути</li><li>Право на форму Хранителя по клубной цене</li></ul><a href="#cta" class="pricing-btn pricing-btn-gold">Стать Хранителем</a></div>
+      <div class="pricing-card reveal reveal-delay-1"><div class="pricing-name">Первый шаг</div>
+        <div class="pricing-desc">Пробная экспедиция — чтобы почувствовать формат.</div>
+        <div class="pricing-price">0 ₽</div><div class="pricing-period">1 пробная экспедиция</div>
+        <ul class="pricing-features">
+          <li>1 экспедиция на природе</li>
+          <li>Камерный отряд 5–7 детей</li>
+          <li>Знакомство с методикой</li>
+          <li>Первая наклейка в дневник</li>
+          <li>Без обязательств</li>
+        </ul><a href="#cta" class="pricing-btn pricing-btn-outline">Попробовать бесплатно</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <div class="pricing-badge">Популярный</div>
+        <div class="pricing-name">Стартовый маршрут</div>
+        <div class="pricing-desc">Первые серьёзные шаги: 4 экспедиции, дневник, первые наблюдения.</div>
+        <div class="pricing-price">6 900 ₽</div>
+        <div class="pricing-period">4 экспедиции</div>
+        <ul class="pricing-features">
+          <li>4 экспедиции на природе</li>
+          <li>Камерный отряд 5–7 детей</li>
+          <li>Дневник наблюдений</li>
+          <li>Наклейки после каждой прогулки</li>
+          <li>Первые наблюдения педагога</li>
+          <li>Доступ в клубный Telegram</li>
+        </ul>
+        <a href="#cta" class="pricing-btn pricing-btn-filled">Начать маршрут</a>
+      </div>
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="pricing-badge">Полный путь</div>
+        <div class="pricing-name">Клубный маршрут</div>
+        <div class="pricing-desc">Постоянный отряд, шевроны, карта пути и форма Хранителя.</div>
+        <div class="pricing-price">11 900 ₽</div>
+        <div class="pricing-period">8 экспедиций</div>
+        <ul class="pricing-features">
+          <li>8 экспедиций на природе</li>
+          <li>Постоянный отряд 5–7 детей</li>
+          <li>Мини-динамика развития</li>
+          <li>Приглашение к посвящению</li>
+          <li>Доступ к шевронам и карте пути</li>
+          <li>Право на форму Хранителя по клубной цене</li>
+        </ul>
+        <a href="#cta" class="pricing-btn pricing-btn-gold">Стать Хранителем</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1408,15 +1499,25 @@ height: 100%;
                 name="phone"
         >
 
-       <button type="submit" id="submitBtn">
-            Записаться
-          </button>
+        <button type="submit" id="submitBtn">
+          Записаться
+        </button>
 
-        </form>
-        <p class="cta-note">Перезвоним в течение 30 минут</p>
+      </form>
+
+      <!-- НОВЫЙ БЛОК: чекбокс + ссылка на политику конфиденциальности -->
+      <div class="cta-checkbox-wrapper">
+        <label class="cta-checkbox-label">
+          <input type="checkbox" id="privacyConsent" class="cta-checkbox">
+          <span class="cta-checkbox-text">
+            Я принимаю условия <a href="#" class="cta-privacy-link" onclick="openModal('privacy'); return false;">Политики конфиденциальности</a> и даю согласие на обработку персональных данных
+          </span>
+        </label>
       </div>
+      <p class="cta-note">Перезвоним в течение 30 минут</p>
     </div>
-  </section>
+  </div>
+</section>
 
 <!--   FOOTER -->
 <footer class="footer">
@@ -1447,225 +1548,472 @@ height: 100%;
   <div class="legal-modal">
     <div class="legal-modal-header"><h3 class="legal-modal-title">Публичная оферта</h3><button class="legal-modal-close" onclick="closeModal('offer')">✕</button></div>
     <div class="legal-modal-body">
-      <h3>1. Общие положения</h3>
-      <p>Настоящий документ является официальным предложением (публичной офертой) [Наименование организации/ИП], ИНН [Ваш ИНН], ОГРН/ОГРНИП [Ваш ОГРН], расположенного по адресу: [Ваш юридический адрес] (далее — «Исполнитель»), и содержит все существенные условия оказания услуг по организации детских исследовательских экспедиций и клубных мероприятий (далее — «Услуги»).</p>
-      <div class="highlight">Оплатой Услуг Вы принимаете условия настоящей Оферты в полном объеме (ст. 438 ГК РФ).</div>
-      <h3>2. Предмет оферты</h3>
-      <p>Исполнитель обязуется оказывать Заказчику (родителю/законному представителю ребенка) Услуги по проведению камерных экспедиций для детей в возрасте 4–12 лет на природных территориях Санкт-Петербурга и Ленинградской области, а Заказчик обязуется принять и оплатить Услуги.</p>
-      <h3>3. Стоимость и порядок оплаты</h3>
-      <p>Стоимость Услуг указывается на сайте в разделе «Тарифы» и является фиксированной на момент оформления заявки. Оплата производится путем перевода денежных средств по реквизитам, указанным Исполнителем, или через онлайн-эквайринг. Услуги считаются оплаченными с момента зачисления средств на расчетный счет Исполнителя.</p>
-      <h3>4. Порядок оказания услуг и отмена</h3>
-      <p>Экспедиции проводятся в соответствии с расписанием, размещенным в клубном Telegram-канале. Заказчик вправе отказаться от участия в конкретной экспедиции, уведомив Исполнителя не позднее чем за 24 часа до начала мероприятия. В случае отмены менее чем за 24 часа или неявки ребенка, денежные средства не возвращаются, но могут быть перенесены на следующую экспедицию в рамках текущего тарифа.</p>
-      <h3>5. Ответственность сторон</h3>
-      <p>Исполнитель несет ответственность за безопасность ребенка в период проведения экспедиции. Исполнитель не несет ответственности за скрытые заболевания ребенка, о которых Заказчик не предупредил заранее. Заказчик гарантирует, что ребенок не имеет медицинских противопоказаний к участию в мероприятиях на свежем воздухе.</p>
-      <h3>6. Форс-мажор</h3>
-      <p>Стороны освобождаются от ответственности за частичное или полное неисполнение обязательств по настоящей Оферте, если оно явилось следствием обстоятельств непреодолимой силы (стихийные явления, эпидемии, действия государственных органов и т.п.).</p>
-      <h3>7. Реквизиты и контакты</h3>
-      <p>[Наименование организации/ИП]<br>ИНН: [Ваш ИНН]<br>Адрес: [Ваш адрес]<br>Email: [Ваш email]<br>Телефон: [Ваш телефон]</p>
+      <h3>ПУБЛИЧНАЯ ОФЕРТА</h3>
+      <p><strong>на оказание услуг по организации и проведению развивающих исследовательских прогулок, outdoor-программ, семейных клубных мероприятий и досуговых практик проекта «ДикоУмные прогулки — Хранители Планеты» / Family Guide</strong></p>
+      <p><strong>Редакция от «16» мая 2026 года</strong><br> г. Санкт-Петербург</p>
+      <p>Настоящий документ является официальным предложением (публичной офертой) в соответствии со статьями 435 и 437 Гражданского кодекса Российской Федерации.</p>
+
+      <h4>1. СТОРОНЫ ДОГОВОРА</h4>
+      <p><strong>1.1. Исполнитель:</strong><br> Николаева Екатерина Сергеевна ИНН: 470418311864<br> Статус: Плательщик налога на профессиональный доход (самозанятый)<br> Проверка статуса: <a href="https://npd.nalog.ru/check-status/" target="_blank">https://npd.nalog.ru/check-status/</a><br> Email: familyguide384@gmail.com<br> Телефон: +7 (969) 700-13-51 (далее — «Исполнитель»)</p>
+      <p><strong>1.2. Заказчик</strong> — любое дееспособное физическое лицо, являющееся законным представителем несовершеннолетнего ребёнка, акцептовавшее настоящую Оферту (далее — «Заказчик», «Ребёнок» — несовершеннолетний участник мероприятий).</p>
+
+      <h4>2. ПРЕДМЕТ ДОГОВОРА</h4>
+      <p><strong>2.1.</strong> Исполнитель обязуется оказать Заказчику услуги по организации и проведению мероприятий проекта «ДикоУмные прогулки — Хранители Планеты» / Family Guide, а Заказчик обязуется принять и оплатить данные услуги.</p>
+      <p><strong>2.2. Услуги могут включать:</strong></p>
+      <ul>
+        <li>исследовательские прогулки на природных и городских территориях;</li>
+        <li>семейные outdoor-программы и клубные встречи;</li>
+        <li>игровые, творческие и исследовательские активности;</li>
+        <li>тьюторское сопровождение семьи;</li>
+        <li>разработку индивидуального маршрута развития на основе педагогического наблюдения;</li>
+        <li>консультационную поддержку;</li>
+        <li>предоставление информационных и методических материалов.</li>
+      </ul>
+      <p><strong>2.3. Услуги Исполнителя:</strong></p>
+      <ul>
+        <li><strong>НЕ являются</strong> образовательной деятельностью в понимании Федерального закона № 273-ФЗ «Об образовании в Российской Федерации»;</li>
+        <li><strong>НЕ включают</strong> услуги по присмотру и уходу, медицинскую, психологическую, коррекционную или реабилитационную деятельность;</li>
+        <li><strong>НЕ предполагают</strong> выдачу документов об образовании, квалификации или прохождении обучения.</li>
+      </ul>
+
+      <h4>3. АКЦЕПТ ОФЕРТЫ</h4>
+      <p><strong>3.1.</strong> Акцептом настоящей Оферты признаётся любое из следующих действий Заказчика:</p>
+      <ul>
+        <li>полная или частичная оплата услуг;</li>
+        <li>заполнение и отправка формы записи на мероприятие;</li>
+        <li>письменное или электронное подтверждение участия Ребёнка;</li>
+        <li>фактическое участие Ребёнка в мероприятии.</li>
+      </ul>
+      <p><strong>3.2.</strong> С момента акцепта договор считается заключённым на условиях настоящей Оферты.</p>
+
+      <h4>4. ПОРЯДОК ОКАЗАНИЯ УСЛУГ</h4>
+      <p><strong>4.1. Участие в мероприятии возможно только при условии:</strong></p>
+      <ul>
+        <li>предварительной записи и подтверждения участия;</li>
+        <li>оплаты (для платных мероприятий);</li>
+        <li>предоставления Заказчиком достоверной информации о Ребёнке;</li>
+        <li>согласия законного представителя на обработку персональных данных (Приложение №1 — Политика обработки персональных данных, Приложение № 2 — Информированное согласие на обработку персональных данных).</li>
+      </ul>
+      <p><strong>4.2. Исполнитель вправе:</strong></p>
+      <ul>
+        <li>изменять маршрут, сценарий, место или продолжительность мероприятия в целях безопасности или по погодным условиям;</li>
+        <li>ограничивать или прекращать участие Ребёнка при угрозе безопасности группе или самому участнику;</li>
+        <li>переносить мероприятие с предварительным уведомлением Заказчика не менее чем за 2 часа до начала.</li>
+      </ul>
+      <p><strong>4.3. Заказчик обязуется:</strong></p>
+      <ul>
+        <li>обеспечить Ребёнка одеждой и обувью, соответствующими погодным условиям и формату outdoor-мероприятия;</li>
+        <li>своевременно сообщать Исполнителю об особенностях здоровья, аллергиях, ограничениях Ребёнка;</li>
+        <li>соблюдать правила безопасности и уважительно взаимодействовать с другими участниками.</li>
+      </ul>
+
+      <h4>5. СТОИМОСТЬ И ПОРЯДОК ОПЛАТЫ</h4>
+      <p><strong>5.1.</strong> Стоимость услуг указывается на официальном сайте, в социальных сетях, в Telegram-канале или в форме записи на конкретное мероприятие.</p>
+      <p><strong>5.2. Оплата производится:</strong></p>
+      <ul>
+        <li>безналичным способом: СБП, банковский перевод на счёт самозанятого, платежи через электронные кошельки;</li>
+        <li>наличными денежными средствами от физических лиц;</li>
+        <li>иными способами, указанными Исполнителем.</li>
+      </ul>
+      <p><strong>5.3.</strong> Исполнитель формирует чек в соответствии с Федеральным законом № 422-ФЗ и направляет его Заказчику в электронной форме.</p>
+      <p><strong>5.4.</strong> Возврат денежных средств осуществляется при условии уведомления Исполнителя не менее чем за 24 часа до начала мероприятия.</p>
+
+      <h4>6. ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h4>
+      <p><strong>6.1.</strong> Акцептуя Оферту, Заказчик подтверждает согласие на обработку персональных данных в соответствии с Политикой обработки персональных данных (<a href="#">Приложение №1</a>).</p>
+      <p><strong>6.2. Обработка данных осуществляется в целях:</strong></p>
+      <ul>
+        <li>организации участия в мероприятиях;</li>
+        <li>обеспечения безопасности участников;</li>
+        <li>информирования о новых мероприятиях (при наличии отдельного согласия);</li>
+        <li>ведения внутреннего учёта и исполнения договорных обязательств.</li>
+      </ul>
+      <p><strong>6.3.</strong> Фото- и видеосъёмка детей осуществляется только при наличии отдельного письменного согласия законного представителя (<a href="#">Приложение №3</a>).</p>
+
+      <h4>7. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ</h4>
+      <p><strong>7.1.</strong> Все материалы проекта являются объектами интеллектуальной собственности Исполнителя и охраняются законодательством РФ.</p>
+      <p><strong>7.2.</strong> Запрещается копирование, коммерческое использование, переработка или распространение материалов проекта без письменного разрешения Исполнителя.</p>
+
+      <h4>8. ОТВЕТСТВЕННОСТЬ И ОГРАНИЧЕНИЯ</h4>
+      <p><strong>8.1. Исполнитель не несёт ответственности за:</strong></p>
+      <ul>
+        <li>последствия сокрытия Заказчиком информации о состоянии здоровья, особенностях поведения или противопоказаниях Ребёнка;</li>
+        <li>действия третьих лиц, не связанных с организацией мероприятия;</li>
+        <li>погодные условия, форс-мажорные обстоятельства, ограничения, введённые органами власти.</li>
+      </ul>
+      <p><strong>8.2.</strong> Рекомендации Исполнителя носят информационный характер и не заменяют консультацию профильных специалистов.</p>
+      <p><strong>8.3.</strong> Исполнитель не гарантирует достижение конкретных результатов развития ребёнка.</p>
+
+      <h4>9. ФОРС-МАЖОР</h4>
+      <p><strong>9.1.</strong> Стороны освобождаются от ответственности при возникновении обстоятельств непреодолимой силы.</p>
+      <p><strong>9.2.</strong> Сторона, не имеющая возможности исполнить обязательства, обязана уведомить другую сторону в течение 3 рабочих дней.</p>
+
+      <h4>10. РАЗРЕШЕНИЕ СПОРОВ</h4>
+      <p><strong>10.1.</strong> Претензии направляются в письменной форме на email Исполнителя.</p>
+      <p><strong>10.2.</strong> Срок рассмотрения претензии — 10 рабочих дней.</p>
+      <p><strong>10.3.</strong> Спор подлежит рассмотрению в суде по месту регистрации Исполнителя.</p>
+
+      <h4>11. СРОК ДЕЙСТВИЯ</h4>
+      <p><strong>11.1.</strong> Оферта вступает в силу с даты публикации и действует до момента её отзыва.</p>
+      <p><strong>11.2.</strong> Исполнитель вправе вносить изменения. Новая редакция вступает в силу с момента публикации.</p>
+      <p><strong>11.3.</strong> Продолжение использования услуг после публикации изменений считается согласием с новой редакцией.</p>
+
+      <h4>12. РЕКВИЗИТЫ ИСПОЛНИТЕЛЯ</h4>
+      <p>Исполнитель: Николаева Екатерина Сергеевна<br> ИНН: 470418311864<br> Email: familyguide384@gmail.com<br> Телефон: +7 (969) 700-13-51</p>
+      <p><strong>Приложения (являются неотъемлемой частью договора):</strong></p>
+      <ul>
+        <li><a href="#">Приложение №1: Политика обработки персональных данных</a></li>
+        <li><a href="#">Приложение №2: Информированное согласие на обработку персональных данных</a></li>
+        <li><a href="#">Приложение №3: Форма отдельного согласия на использование изображения</a></li>
+      </ul>
+      <hr>
+
+      <!-- ======================= ДОКУМЕНТ 2: ИНФОРМИРОВАННОЕ СОГЛАСИЕ ======================= -->
+      <h3>ИНФОРМИРОВАННОЕ СОГЛАСИЕ на обработку персональных данных</h3>
+      <p>Во исполнение требований статей 6 и 9 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных», действуя свободно, своей волей и в своём интересе, даю согласие Николаевой Екатерине Сергеевне (Оператор) на обработку моих персональных данных на следующих условиях:</p>
+
+      <h4>1. ПЕРЕЧЕНЬ ПЕРСОНАЛЬНЫХ ДАННЫХ</h4>
+      <ul>
+        <li>Фамилия, имя, отчество (при наличии);</li>
+        <li>Контактный телефон;</li>
+        <li>Адрес электронной почты (e-mail);</li>
+        <li>Иные данные — только если обоснованы целью.</li>
+      </ul>
+
+      <h4>2. ЦЕЛИ ОБРАБОТКИ</h4>
+      <ul>
+        <li>Обработка обращений и запросов Пользователя (ФЗ № 59-ФЗ);</li>
+        <li>Установление обратной связи, направления уведомлений, ответов на запросы;</li>
+        <li>Оказание технической поддержки при использовании Сайта и услуг.</li>
+      </ul>
+
+      <h4>3. ПРАВОВОЕ ОСНОВАНИЕ</h4>
+      <ul>
+        <li>Статья 6 Федерального закона № 152-ФЗ;</li>
+        <li>Настоящее информированное согласие Пользователя.</li>
+      </ul>
+
+      <h4>4. СПОСОБЫ ОБРАБОТКИ</h4>
+      <p>Сбор, запись, систематизация, накопление, хранение, уточнение, использование, передача (при необходимости), обезличивание, блокирование, удаление, уничтожение — как с использованием автоматизации, так и без.</p>
+
+      <h4>5. СРОК ХРАНЕНИЯ</h4>
+      <p>До достижения целей обработки или до отзыва согласия Пользователем.</p>
+
+      <h4>6. ПЕРЕДАЧА ТРЕТЬИМ ЛИЦАМ</h4>
+      <p>Не передаются, за исключением случаев, необходимых для достижения целей (хостинг, сервисы рассылок) или по требованию закона.</p>
+
+      <h4>7. ПРАВА СУБЪЕКТА ДАННЫХ</h4>
+      <p>Имею право на доступ, уточнение, блокирование или уничтожение своих данных, а также на отзыв согласия по email: <a href="mailto:familyguide384@gmail.com">familyguide384@gmail.com</a>.</p>
+
+      <h4>8. ОТЗЫВ СОГЛАСИЯ</h4>
+      <p>Отзыв не влияет на законность обработки до момента отзыва. После отзыва данные уничтожаются в течение 30 дней.</p>
+
+      <p><strong>Акцептом настоящего Согласия считается проставление отметки (галочки) в соответствующем поле формы на Сайте и/или направление данных через форму.</strong></p>
+      <p>Я ознакомлен(а) и согласен(на) с условиями обработки персональных данных.</p>
     </div>
   </div>
 </div>
 
 <div class="legal-modal-overlay" id="modal-privacy">
   <div class="legal-modal">
-    <div class="legal-modal-header"><h3 class="legal-modal-title">Политика конфиденциальности</h3><button class="legal-modal-close" onclick="closeModal('privacy')">✕</button></div>
+    <div class="legal-modal-header">
+      <h3 class="legal-modal-title">Политика обработки персональных данных</h3>
+      <button class="legal-modal-close" onclick="closeModal('privacy')">✕</button>
+    </div>
     <div class="legal-modal-body">
-      <h3>1. Общие сведения</h3>
-      <p>Настоящая Политика конфиденциальности (далее — «Политика») действует в отношении всей информации, которую [Наименование организации/ИП] (далее — «Оператор») может получить о Пользователе в процессе использования сайта, регистрации на мероприятия и взаимодействия с клубом. Политика разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
-      <h3>2. Персональные данные, подлежащие обработке</h3>
-      <p>Оператор обрабатывает следующие персональные данные Пользователя:</p>
+      <p><strong>Самозанятого Николаевой Екатерины Сергеевны</strong><br>
+        ИНН 470418311864 | familyguide384@gmail.com | Телефон: +7 (969) 700-13-51</p>
+
+      <h3>1. ОБЩИЕ ПОЛОЖЕНИЯ</h3>
+      <p>1.1. Настоящая Политика обработки персональных данных (далее — Политика) разработана в соответствии с: Конституцией Российской Федерации; Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных»; Гражданским кодексом Российской Федерации; Законом РФ от 07.02.1992 № 2300-1 «О защите прав потребителей»; Федеральным законом от 27.11.2018 № 422-ФЗ «О проведении эксперимента по установлению специального налогового режима "Налог на профессиональный доход"»; иными нормативными правовыми актами Российской Федерации.</p>
+      <p>1.2. Политика определяет порядок обработки и защиты персональных данных физических лиц (далее — субъекты персональных данных), предоставляющих свои персональные данные Николаевой Екатерине Сергеевне, зарегистрированной в качестве плательщика налога на профессиональный доход (самозанятой), ИНН 470418311864 (далее — Оператор), в связи с участием в мероприятиях проекта «ДикоУмные прогулки — Хранители Планеты» / Family Guide.</p>
+      <p>1.3. Оператор является оператором персональных данных в соответствии со статьей 3 Федерального закона № 152-ФЗ и самостоятельно организует и осуществляет обработку персональных данных, а также определяет цели обработки, состав персональных данных, подлежащих обработке, и действия (операции), совершаемые с персональными данными.</p>
+      <p>1.4. Применение Политики распространяется на все способы обработки персональных данных, осуществляемые Оператором как с использованием средств автоматизации, так и без использования таких средств.</p>
+      <p>1.5. Обработка персональных данных осуществляется на законной и справедливой основе, ограничивается достижением конкретных, заранее определённых и законных целей.</p>
+      <p>1.6. Оператор не осуществляет обработку персональных данных в целях, несовместимых с целями сбора персональных данных, и не допускает объединения баз данных, содержащих персональные данные, обработка которых осуществляется в целях, несовместимых между собой.</p>
+
+      <h3>2. ЦЕЛИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h3>
+      <p>2.1. Оператор обрабатывает персональные данные субъектов в следующих целях:</p>
       <ul>
-        <li>Фамилия, имя, отчество родителя/законного представителя</li>
-        <li>Контактный телефон и адрес электронной почты</li>
-        <li>Имя, возраст и особенности здоровья ребенка (только для обеспечения безопасности на экспедициях)</li>
-        <li>Информация о выбранных тарифах и посещении мероприятий</li>
+        <li>2.1.1. Заключение, исполнение и прекращение договоров на оказание услуг по организации и проведению развивающих исследовательских прогулок, outdoor-программ, семейных клубных мероприятий и досуговых практик (далее — Услуги);</li>
+        <li>2.1.2. Идентификация Заказчика и несовершеннолетнего участника мероприятий (далее — Ребёнок) в рамках оказания Услуг;</li>
+        <li>2.1.3. Обеспечение безопасности участников мероприятий, включая учёт индивидуальных особенностей здоровья и развития (при добровольном предоставлении такой информации);</li>
+        <li>2.1.4. Информирование о мероприятиях, изменениях в расписании, особенностях проведения, направления ответов на запросы субъектов персональных данных (при наличии согласия субъекта);</li>
+        <li>2.1.5. Формирование и направление чеков в соответствии с Федеральным законом от 27.11.2018 № 422-ФЗ «О проведении эксперимента по установлению специального налогового режима "Налог на профессиональный доход"» через мобильное приложение «Мой налог» или уполномоченного оператора фискальных данных;</li>
+        <li>2.1.6. Исполнение обязанностей, предусмотренных законодательством Российской Федерации, в том числе в области защиты прав потребителей, налогового законодательства, законодательства о персональных данных;</li>
+        <li>2.1.7. Рассмотрение обращений и претензий субъектов персональных данных;</li>
+        <li>2.1.8. Обеспечение возможности реализации прав субъектов персональных данных, предусмотренных Федеральным законом № 152-ФЗ.</li>
       </ul>
-      <h3>3. Цели обработки персональных данных</h3>
-      <p>Персональные данные обрабатываются в следующих целях:</p>
+      <p>2.2. Оператор не осуществляет обработку специальных категорий персональных данных, касающихся расовой, национальной принадлежности, политических взглядов, религиозных или философских убеждений, интимной жизни, за исключением случаев, когда такие данные предоставляются субъектом добровольно в целях обеспечения безопасности (например, информация об аллергиях, хронических заболеваниях, особенностях развития) и с отдельного письменного согласия, оформленного в соответствии со статьей 9 Федерального закона № 152-ФЗ.</p>
+      <p>2.3. Обработка биометрических персональных данных (сведений, которые характеризуют физиологические и биологические особенности человека и на основании которых можно установить его личность) Оператором не осуществляется, за исключением случаев получения фото- и/или видеоматериалов с отдельного согласия субъекта персональных данных или его законного представителя для целей, указанных в разделе 2.1 настоящей Политики.</p>
+
+      <h3>3. ПРАВОВЫЕ ОСНОВАНИЯ ОБРАБОТКИ</h3>
+      <p>3.1. Обработка персональных данных осуществляется на следующих правовых основаниях:</p>
       <ul>
-        <li>Идентификация Пользователя и регистрация на экспедиции</li>
-        <li>Обеспечение связи, информирование о расписании и изменениях</li>
-        <li>Организация безопасной среды для ребенка на мероприятиях</li>
-        <li>Формирование карты развития и педагогических наблюдений</li>
-        <li>Улучшение качества Услуг и клубного опыта</li>
+        <li>3.1.1. Согласие субъекта персональных данных на обработку его персональных данных (п. 1 ч. 1 ст. 6, ст. 9 Федерального закона № 152-ФЗ);</li>
+        <li>3.1.2. Исполнение договора, стороной которого либо выгодоприобретателем или поручителем по которому является субъект персональных данных (п. 5 ч. 1 ст. 6 Федерального закона № 152-ФЗ);</li>
+        <li>3.1.3. Исполнение обязанностей, предусмотренных законодательством Российской Федерации, в том числе налоговым законодательством, законодательством о защите прав потребителей (п. 2 ч. 1 ст. 6 Федерального закона № 152-ФЗ);</li>
+        <li>3.1.4. Осуществление прав и законных интересов Оператора или третьих лиц, при условии, что при этом не нарушаются права и свободы субъекта персональных данных (п. 7 ч. 1 ст. 6 Федерального закона № 152-ФЗ).</li>
       </ul>
-      <h3>4. Правовые основания и способы обработки</h3>
-      <p>Обработка персональных данных осуществляется на основании согласия Пользователя, выраженного путем заполнения формы на сайте, оплаты Услуг или подписки на клубные материалы. Обработка производится как автоматизированным, так и неавтоматизированным способом.</p>
-      <h3>5. Защита персональных данных</h3>
-      <p>Оператор принимает необходимые и достаточные организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения. Доступ к данным имеют только уполномоченные сотрудники клуба.</p>
-      <h3>6. Передача данных третьим лицам</h3>
-      <p>Оператор не передает персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ, или для исполнения обязательств перед Пользователем (например, передача данных педагогическому составу, непосредственно работающему с отрядом).</p>
-      <h3>7. Права Пользователя</h3>
-      <p>Пользователь имеет право на получение информации, касающейся обработки его персональных данных, требование уточнения, блокирования или уничтожения данных, а также вправе отозвать согласие на обработку, направив письменное или электронное заявление на [Ваш email]. В случае отзыва согласия Оператор вправе продолжить обработку данных без согласия Пользователя при наличии оснований, указанных в п. 2–11 ч. 1 ст. 6, ч. 2 ст. 10 и ч. 2 ст. 11 ФЗ №152.</p>
-      <h3>8. Срок хранения данных</h3>
-      <p>Персональные данные хранятся в течение срока действия договорных отношений, а также в течение 3 (трех) лет после их прекращения, если иное не предусмотрено законодательством РФ. По истечении срока данные уничтожаются или обезличиваются.</p>
-      <h3>9. Контактные данные Оператора</h3>
-      <p>[Наименование организации/ИП]<br>Адрес: [Ваш адрес]<br>Email: [Ваш email]<br>Телефон: [Ваш телефон]</p>
+      <p>3.2. Согласие на обработку персональных данных считается полученным в момент:</p>
+      <ul>
+        <li>акцепта Публичной оферты на оказание услуг путём оплаты Услуг;</li>
+        <li>заполнения электронной формы записи на мероприятие с проставлением отметки о согласии на обработку персональных данных;</li>
+        <li>подписания письменной формы согласия на обработку персональных данных.</li>
+      </ul>
+      <p>3.3. Согласие на обработку персональных данных является конкретным, предметным, информированным, сознательным и однозначным. Субъект персональных данных принимает решение о предоставлении его персональных данных и даёт согласие на их обработку свободно, своей волей и в своём интересе.</p>
+      <p>3.4. Согласие на обработку персональных данных может быть отозвано субъектом персональных данных в любое время путём направления письменного заявления на адрес электронной почты Оператора: familyguide384@gmail.com. В случае отзыва согласия Оператор вправе продолжить обработку персональных данных без согласия субъекта при наличии оснований, указанных в пунктах 2–11 части 1 статьи 6 Федерального закона № 152-ФЗ.</p>
+
+      <h3>4. ОБЪЁМ И КАТЕГОРИИ ОБРАБАТЫВАЕМЫХ ПЕРСОНАЛЬНЫХ ДАННЫХ</h3>
+      <p>4.1. Оператор обрабатывает следующие категории персональных данных:</p>
+      <p><strong>Заказчик (родитель или иной законный представитель несовершеннолетнего):</strong></p>
+      <ul>
+        <li>Фамилия, имя, отчество (при наличии);</li>
+        <li>Контактный номер телефона;</li>
+        <li>Адрес электронной почты;</li>
+        <li>Данные документа, удостоверяющего личность (при необходимости оформления документов);</li>
+        <li>Данные необходимые для формирования чека в соответствии с ФЗ-422;</li>
+        <li>Иные данные, предоставленные субъектом добровольно.</li>
+      </ul>
+      <p><strong>Ребёнок (несовершеннолетний участник мероприятия):</strong></p>
+      <ul>
+        <li>Фамилия, имя, отчество (при наличии);</li>
+        <li>Дата рождения;</li>
+        <li>Информация о состоянии здоровья, аллергиях, особенностях развития и поведения (предоставляется законным представителем добровольно исключительно в целях обеспечения безопасности);</li>
+        <li>Фото- и/или видеоматериалы (при наличии отдельного согласия законного представителя).</li>
+      </ul>
+      <p>4.2. Оператор не собирает и не обрабатывает персональные данные, не соответствующие заявленным целям обработки, а также избыточные по отношению к этим целям.</p>
+      <p>4.3. Оператор не осуществляет обработку персональных данных, полученных из общедоступных источников, без дополнительного согласия субъекта, за исключением случаев, предусмотренных Федеральным законом № 152-ФЗ.</p>
+      <p>4.4. Оператор не осуществляет профилирование субъектов персональных данных.</p>
+
+      <h3>5. УСЛОВИЯ И СПОСОБЫ ОБРАБОТКИ</h3>
+      <p>5.1. Обработка персональных данных осуществляется:</p>
+      <ul>
+        <li>с использованием средств автоматизации: электронные формы записи, мобильное приложение «Мой налог», сервисы электронной почты, мессенджеры, облачные хранилища с обеспечением защиты данных;</li>
+        <li>без использования средств автоматизации: бумажные носители (при необходимости оформления документов, ведения журналов учёта).</li>
+      </ul>
+      <p>5.2. Обработка персональных данных включает следующие действия (операции): сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
+      <p>5.3. Оператор обеспечивает конфиденциальность персональных данных и принимает необходимые правовые, организационные и технические меры для их защиты от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, предоставления, распространения, а также от иных неправомерных действий в отношении персональных данных.</p>
+      <p>5.4. Передача персональных данных третьим лицам осуществляется только в следующих случаях:</p>
+      <ul>
+        <li>с письменного согласия субъекта персональных данных;</li>
+        <li>при передаче данных оператору фискальных данных для формирования чеков в соответствии с Федеральным законом № 422-ФЗ;</li>
+        <li>при передаче данных лицам, осуществляющим обработку персональных данных по поручению Оператора на основании договора, при условии соблюдения такими лицами требований Федерального закона № 152-ФЗ;</li>
+        <li>по требованию уполномоченных государственных органов в порядке и случаях, установленных законодательством Российской Федерации.</li>
+      </ul>
+      <p>5.5. Оператор не поручает обработку персональных данных иностранным физическим или юридическим лицам.</p>
+      <p>5.6. Трансграничная передача персональных данных Оператором не осуществляется.</p>
+      <p>5.7. Оператор не осуществляет автоматизированное принятие решений, порождающих юридические последствия в отношении субъекта персональных данных или иным образом затрагивающих его права и законные интересы.</p>
+
+      <h3>6. СРОКИ ОБРАБОТКИ И ХРАНЕНИЯ ПЕРСОНАЛЬНЫХ ДАННЫХ</h3>
+      <p>6.1. Персональные данные обрабатываются до достижения целей обработки, указанных в разделе 2 настоящей Политики, либо до отзыва согласия субъектом персональных данных, если иное не предусмотрено законодательством Российской Федерации.</p>
+      <p>6.2. В случае достижения целей обработки, отзыва согласия субъекта персональных данных или выявления неправомерной обработки персональные данные подлежат уничтожению или обезличиванию в порядке, установленном законодательством Российской Федерации и локальными актами Оператора, если иное не предусмотрено федеральным законом.</p>
+      <p>6.3. Уничтожение персональных данных осуществляется путём: физического уничтожения бумажных носителей; безвозвратного удаления электронных файлов с обеспечением невозможности восстановления информации.</p>
+
+      <h3>7. ПРАВА СУБЪЕКТА ПЕРСОНАЛЬНЫХ ДАННЫХ</h3>
+      <p>7.1. В соответствии со статьями 14, 21 Федерального закона № 152-ФЗ субъект персональных данных вправе:</p>
+      <ul>
+        <li>7.1.1. Получать информацию, касающуюся обработки его персональных данных, в том числе содержащую: подтверждение факта обработки персональных данных Оператором; правовые основания и цели обработки персональных данных; цели и применяемые Оператором способы обработки персональных данных; наименование и место нахождения Оператора, сведения о лицах, которые имеют доступ к персональным данным или которым могут быть раскрыты персональные данные на основании договора с Оператором или на основании федерального закона; обрабатываемые персональные данные, относящиеся к соответствующему субъекту персональных данных, источник их получения; сроки обработки персональных данных, в том числе сроки их хранения; порядок осуществления субъектом персональных данных прав, предусмотренных Федеральным законом № 152-ФЗ; информацию об осуществлённой или о предполагаемой трансграничной передаче данных; наименование или фамилию, имя, отчество и адрес лица, осуществляющего обработку персональных данных по поручению Оператора; иные сведения, предусмотренные Федеральным законом № 152-ФЗ или другими федеральными законами.</li>
+        <li>7.1.2. Требовать от Оператора уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки.</li>
+        <li>7.1.3. Отозвать согласие на обработку персональных данных путём направления письменного заявления на адрес электронной почты Оператора: familyguide384@gmail.com. Отзыв согласия не влияет на законность обработки, осуществлённой до момента отзыва.</li>
+        <li>7.1.4. Требовать прекращения обработки персональных данных в случаях, предусмотренных Федеральным законом № 152-ФЗ.</li>
+        <li>7.1.5. Обжаловать действия или бездействие Оператора в уполномоченный орган по защите прав субъектов персональных данных (Роскомнадзор) или в судебном порядке.</li>
+        <li>7.1.6. На защиту своих прав и законных интересов, в том числе на возмещение убытков и (или) компенсацию морального вреда в судебном порядке.</li>
+      </ul>
+      <p>7.2. Запрос на реализацию прав субъекта персональных данных направляется в форме электронного документа, подписанного электронной подписью в соответствии с законодательством Российской Федерации, по адресу: familyguide384@gmail.com.</p>
+      <p>7.3. Оператор обязан рассмотреть запрос субъекта персональных данных и направить ответ в срок, не превышающий 10 рабочих дней с даты получения запроса. Указанный срок может быть продлен не более чем на 5 рабочих дней в случае направления субъекту персональных данных мотивированного уведомления с указанием причин продления.</p>
+      <p>7.4. Информация предоставляется субъекту персональных данных в доступной форме, и в ней не должны содержаться персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, если имеются законные основания для раскрытия таких персональных данных.</p>
+
+      <h3>8. ОСОБЕННОСТИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ НЕСОВЕРШЕННОЛЕТНИХ</h3>
+      <p>8.1. Обработка персональных данных несовершеннолетних участников мероприятий осуществляется только с согласия их законных представителей (родителей, усыновителей, опекунов или попечителей) в соответствии со статьёй 9 Федерального закона № 152-ФЗ.</p>
+      <p>8.2. Законный представитель несовершеннолетнего вправе:</p>
+      <ul>
+        <li>предоставить согласие на обработку персональных данных Ребёнка;</li>
+        <li>отозвать согласие на обработку персональных данных в любое время;</li>
+        <li>требовать уточнения, блокирования или уничтожения персональных данных Ребёнка.</li>
+      </ul>
+      <p>8.3. Фото- и видеосъёмка несовершеннолетних осуществляется исключительно при наличии отдельного согласия законного представителя, оформленного в письменной или электронной форме, с указанием целей и сроков использования изображений.</p>
+      <p>8.4. При обработке персональных данных несовершеннолетних Оператор руководствуется принципами приоритета прав и законных интересов ребёнка, необходимости защиты его прав на неприкосновенность частной жизни, личную и семейную тайну.</p>
+
+      <h3>9. МЕРЫ ПО ОБЕСПЕЧЕНИЮ БЕЗОПАСНОСТИ ПЕРСОНАЛЬНЫХ ДАННЫХ</h3>
+      <p>9.1. Оператор принимает необходимые правовые, организационные и технические меры для защиты персональных данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, предоставления, распространения, а также от иных неправомерных действий, включая:</p>
+      <ul>
+        <li>9.1.1. Правовые меры: ознакомление лиц, допущенных к обработке персональных данных, с положениями законодательства о персональных данных и настоящей Политикой.</li>
+        <li>9.1.2. Организационные меры: определение угроз безопасности персональных данных при их обработке; установление правил доступа к персональным данным; регистрация и учёт всех действий, совершаемых с персональными данными; контроль за принимаемыми мерами по обеспечению безопасности персональных данных; разграничение прав доступа к информационным системам и базам данных.</li>
+        <li>9.1.3. Технические меры: использование антивирусных средств защиты; обеспечение резервного копирования и восстановления персональных данных; применение средств обнаружения несанкционированного доступа.</li>
+      </ul>
+      <p>9.2. Доступ к персональным данным имеют только уполномоченные лица Оператора, непосредственно участвующие в оказании Услуг и ознакомленные с настоящей Политикой под роспись.</p>
+      <p>9.3. Оператор обеспечивает взаимодействие с государственной системой обнаружения, предупреждения и ликвидации последствий компьютерных атак на информационные ресурсы Российской Федерации, включая информирование о компьютерных инцидентах, повлёкших неправомерную передачу персональных данных.</p>
+      <p>9.4. В случае установления факта неправомерной или случайной передачи персональных данных, повлёкшей нарушение прав субъектов персональных данных, Оператор обязан уведомить уполномоченный орган по защите прав субъектов персональных данных (Роскомнадзор) в порядке и сроки, установленные законодательством Российской Федерации.</p>
+
+      <h3>10. ЗАКЛЮЧИТЕЛЬНЫЕ ПОЛОЖЕНИЯ</h3>
+      <p>10.1. Настоящая Политика является общедоступным документом и подлежит размещению на официальном сайте/в телеграм-канале проекта «ДикоУмные прогулки — Хранители Планеты» / Family Guide.</p>
+      <p>10.2. Оператор вправе вносить изменения и (или) дополнения в настоящую Политику. Новая редакция Политики вступает в силу с момента её размещения на официальном ресурсе Оператора, если иное не предусмотрено новой редакцией.</p>
+      <p>10.3. Все предложения, вопросы и обращения, связанные с обработкой персональных данных, направляются по адресу электронной почты: familyguide384@gmail.com.</p>
+      <p>10.4. Актуальная версия настоящей Политики доступна по адресу: [указать URL сайта/телеграм-канала].</p>
+      <p>10.6. В случае признания отдельных положений настоящей Политики недействительными или неисполнимыми, это не влечёт недействительности или неисполнимости остальных положений.</p>
+      <p>10.7. К настоящей Политике и отношениям между субъектом персональных данных и Оператором применяется законодательство Российской Федерации.</p>
+
+      <h3>Реквизиты Оператора:</h3>
+      <p>Николаева Екатерина Сергеевна<br>
+        Статус: Плательщик налога на профессиональный доход (самозанятая)<br>
+        ИНН: 470418311864<br>
+        Адрес электронной почты: familyguide384@gmail.com<br>
+        Контактный телефон: +7 (969) 700-13-51<br>
+        Проект: «ДикоУмные прогулки — Хранители Планеты» / Family Guide</p>
     </div>
   </div>
-
-
-  
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-// ===== PRELOADER =====
-window.addEventListener('load', () => { setTimeout(() => { document.getElementById('preloader').classList.add('hidden'); }, 1800); });
-
-// ===== NAVIGATION SCROLL =====
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 80); });
-
-// ===== PARTICLES =====
-const particlesContainer = document.getElementById('particles');
-for (let i = 0; i < 20; i++) {
-  const p = document.createElement('div'); p.classList.add('particle');
-  const size = Math.random() * 6 + 3;
-  p.style.width = size + 'px'; p.style.height = size + 'px';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.animationDuration = (Math.random() * 15 + 10) + 's';
-  p.style.animationDelay = (Math.random() * 10) + 's';
-  particlesContainer.appendChild(p);
-}
-
-// ===== SCROLL REVEAL =====
-const revealElements = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-revealElements.forEach(el => revealObserver.observe(el));
-
-// ===== COUNTER ANIMATION =====
-const counters = document.querySelectorAll('.counter');
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const counter = entry.target; const target = parseInt(counter.dataset.target);
-      const duration = 2000; const start = performance.now();
-      function update(currentTime) {
-        const elapsed = currentTime - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        counter.textContent = Math.round(eased * target);
-        if (progress < 1) requestAnimationFrame(update);
-      }
-      requestAnimationFrame(update); counterObserver.unobserve(counter);
-    }
+  emailjs.init({
+    publicKey: "zrkK1MCBxCOhuIcZw",
   });
-}, { threshold: 0.5 });
-counters.forEach(c => counterObserver.observe(c));
+</script>
+<script>
+  // ===== PRELOADER =====
+  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('preloader').classList.add('hidden'); }, 1800); });
 
-// ===== FAQ TOGGLE =====
-function toggleFaq(el) {
-  const item = el.parentElement; const isActive = item.classList.contains('active');
-  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-  if (!isActive) item.classList.add('active');
-}
+  // ===== NAVIGATION SCROLL =====
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 80); });
 
-// ===== FORM SUBMIT =====
+  // ===== PARTICLES =====
+  const particlesContainer = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div'); p.classList.add('particle');
+    const size = Math.random() * 6 + 3;
+    p.style.width = size + 'px'; p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    particlesContainer.appendChild(p);
+  }
 
+  // ===== SCROLL REVEAL =====
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  revealElements.forEach(el => revealObserver.observe(el));
 
+  // ===== COUNTER ANIMATION =====
+  const counters = document.querySelectorAll('.counter');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counter = entry.target; const target = parseInt(counter.dataset.target);
+        const duration = 2000; const start = performance.now();
+        function update(currentTime) {
+          const elapsed = currentTime - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          counter.textContent = Math.round(eased * target);
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update); counterObserver.unobserve(counter);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObserver.observe(c));
+
+  // ===== FAQ TOGGLE =====
+  function toggleFaq(el) {
+    const item = el.parentElement; const isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+    if (!isActive) item.classList.add('active');
+  }
+
+  // ===== FORM SUBMIT =====
+  // ===== FORM SUBMIT WITH CHECKBOX VALIDATION =====
   const form = document.getElementById('ctaForm');
+  const consentCheckbox = document.getElementById('privacyConsent');
 
   form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  e.preventDefault();
+    const parentName = document.getElementById('parentName').value.trim();
+    const childAge = document.getElementById('childAge').value.trim();
+    const phone = document.getElementById('phoneInput').value.trim();
 
-  const parentName =
-  document.getElementById('parentName').value.trim();
+    // Проверка согласия с политикой конфиденциальности
+    if (!consentCheckbox.checked) {
+      alert('Пожалуйста, примите условия Политики конфиденциальности');
+      return;
+    }
 
-  const childAge =
-  document.getElementById('childAge').value.trim();
+    if (!parentName || !childAge || !phone) {
+      alert('Пожалуйста, заполните все поля');
+      return;
+    }
 
-  const phone =
-  document.getElementById('phoneInput').value.trim();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Отправляем...';
 
-  if (!parentName || !childAge || !phone) {
+    try {
+      await emailjs.send(
+              'service_2stz2w7',
+              'template_oi33foi',
+              {
+                parent_name: parentName,
+                child_age: childAge,
+                phone: phone
+              }
+      );
 
-  alert('Пожалуйста заполните все поля');
+      btn.textContent = '✓ Заявка отправлена';
+      btn.style.background = '#4A8C5E';
+      form.reset();
+      consentCheckbox.checked = false; // сбросить чекбокс после отправки
 
-  return;
-}
+    } catch (error) {
+      console.error(error);
+      btn.textContent = 'Ошибка отправки';
+      btn.style.background = '#c0392b';
+    }
 
-  const btn =
-  document.getElementById('submitBtn');
-
-  btn.disabled = true;
-
-  btn.textContent = 'Отправляем...';
-
-  try {
-
-  await emailjs.send(
-  'service_2stz2w7',
-  'template_oi33foi',
-{
-  parent_name: parentName,
-  child_age: childAge,
-  phone: phone
-}
-  );
-
-  btn.textContent = '✓ Заявка отправлена';
-
-  btn.style.background = '#4A8C5E';
-
-  form.reset();
-
-} catch (error) {
-
-  console.error(error);
-
-  btn.textContent = 'Ошибка отправки';
-
-  btn.style.background = '#c0392b';
-}
-
-  setTimeout(() => {
-
-  btn.disabled = false;
-
-  btn.textContent = 'Записаться';
-
-  btn.style.background = '';
-
-}, 4000);
-
-});
-
-
-// ===== SMOOTH SCROLL =====
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', function(e) {
-    e.preventDefault(); const target = document.querySelector(this.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = 'Записаться';
+      btn.style.background = '';
+    }, 4000);
   });
-});
 
-// ===== LEGAL MODALS =====
-function openModal(type) {
-  document.getElementById(`modal-${type}`).classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(type) {
-  document.getElementById(`modal-${type}`).classList.remove('active');
-  document.body.style.overflow = '';
-}
-document.querySelectorAll('.legal-modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
+
+  // ===== SMOOTH SCROLL =====
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault(); const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ===== LEGAL MODALS =====
+  function openModal(type) {
+    document.getElementById(`modal-${type}`).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(type) {
+    document.getElementById(`modal-${type}`).classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.legal-modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.legal-modal-overlay.active').forEach(m => {
+        m.classList.remove('active');
+        document.body.style.overflow = '';
+      });
     }
   });
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.legal-modal-overlay.active').forEach(m => {
-      m.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  }
-});
 </script>
 
 </body>
