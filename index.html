@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+
     :root {
       --forest: #2D5A3D;
       --forest-deep: #1A3A2A;
@@ -127,6 +128,314 @@
     .modular-card:nth-child(3) .modular-stud span { background: var(--sky); }
     .modular-card:nth-child(4) .modular-stud span { background: var(--gold); }
     .modular-card:nth-child(5) .modular-stud span { background: var(--moss); }
+
+
+    /* ===== WORKSHOP — ORANGE FEATURE BLOCK ===== */
+    .workshop-section {
+      background:
+              radial-gradient(circle at 8% 18%, rgba(255,255,255,0.14) 0 90px, transparent 91px),
+              radial-gradient(circle at 94% 82%, rgba(255,255,255,0.10) 0 150px, transparent 151px),
+              var(--terracotta);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .workshop-section::before {
+      content: '';
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      right: -180px;
+      top: -220px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 50%;
+      box-shadow:
+              0 0 0 45px rgba(255,255,255,0.035),
+              0 0 0 90px rgba(255,255,255,0.025);
+      pointer-events: none;
+    }
+
+    .workshop-section .section-header {
+      position: relative;
+      z-index: 1;
+    }
+
+    .workshop-section .section-tag {
+      color: rgba(255,255,255,0.78);
+    }
+
+    .workshop-section .section-tag-line {
+      background: rgba(255,255,255,0.65);
+    }
+
+    .workshop-section .section-title {
+      color: white;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .workshop-section .section-title span {
+      color: #FFE0CF;
+    }
+
+    .workshop-section .section-subtitle {
+      color: rgba(255,255,255,0.78);
+      max-width: 760px;
+    }
+
+    .workshop-section .modular-grid {
+      position: relative;
+      z-index: 1;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .workshop-section .modular-card {
+      min-height: 330px;
+      background: #FFF9F4;
+      border: 0;
+      border-radius: 22px;
+      padding: 2rem 1.7rem 1.8rem;
+      box-shadow: 0 18px 45px rgba(88, 42, 27, 0.16);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .workshop-section .modular-card:hover {
+      transform: translateY(-8px) rotate(-0.5deg);
+      box-shadow: 0 28px 60px rgba(88, 42, 27, 0.24);
+      border-color: transparent;
+    }
+
+    /* Оранжевая вертикальная линия вместо разноцветных полос */
+    .workshop-section .modular-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 7px;
+      height: 100%;
+      border-radius: 22px 0 0 22px;
+      background: #E9784F;
+    }
+
+    .workshop-section .modular-card:nth-child(n)::before {
+      background: #E9784F;
+    }
+
+    /* Номер карточки — визуальный ритм */
+    .workshop-section .modular-card::after {
+      position: absolute;
+      top: 1.35rem;
+      right: 1.35rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1;
+      color: rgba(201, 91, 58, 0.09);
+    }
+
+    .workshop-section .modular-card:nth-child(1)::after { content: '01'; }
+    .workshop-section .modular-card:nth-child(2)::after { content: '02'; }
+    .workshop-section .modular-card:nth-child(3)::after { content: '03'; }
+    .workshop-section .modular-card:nth-child(4)::after { content: '04'; }
+
+    .workshop-section .modular-stud {
+      display: none;
+    }
+
+    .workshop-section .modular-icon {
+      width: 58px;
+      height: 58px;
+      margin-bottom: 2rem;
+      border-radius: 17px;
+      background: #FBE2D6 !important;
+      font-size: 1.7rem;
+      box-shadow: inset 0 0 0 1px rgba(196,114,78,0.08);
+    }
+
+    .workshop-section .modular-card h3 {
+      position: relative;
+      z-index: 2;
+      font-size: 1.25rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .workshop-section .modular-card p {
+      position: relative;
+      z-index: 2;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: #82766D;
+    }
+
+    @media (max-width: 900px) {
+      .workshop-section .modular-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .workshop-section {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+      }
+
+      .workshop-section .section-header {
+        margin-bottom: 3rem;
+      }
+
+      .workshop-section .modular-grid {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+      }
+
+      .workshop-section .modular-card {
+        min-height: 0;
+        padding: 1.7rem 1.5rem 1.6rem;
+      }
+
+      .workshop-section .modular-icon {
+        margin-bottom: 1.4rem;
+      }
+
+      .workshop-section .modular-card::after {
+        font-size: 2.8rem;
+      }
+    }
+
+
+    /* ===== WORKSHOP PROCESS ===== */
+    .workshop-process-section {
+      background: var(--warm-white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .workshop-process-section::before {
+      content: '';
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      left: -240px;
+      top: 8%;
+      border-radius: 50%;
+      background: rgba(201, 91, 58, 0.07);
+      pointer-events: none;
+    }
+
+    .workshop-process-section .section-header {
+      position: relative;
+      z-index: 1;
+    }
+
+    .workshop-process-section .section-tag-line {
+      background: var(--terracotta);
+    }
+
+    .workshop-process-section .section-tag {
+      color: var(--terracotta);
+    }
+
+    .workshop-process-section .section-title span {
+      color: var(--terracotta);
+    }
+
+    .workshop-process-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 3.5rem;
+    }
+
+    .workshop-process-card {
+      position: relative;
+      min-height: 205px;
+      padding: 1.7rem 1.5rem 1.5rem;
+      background: white;
+      border: 1px solid rgba(201, 91, 58, 0.12);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .workshop-process-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 45px rgba(88, 42, 27, 0.13);
+      border-color: rgba(201, 91, 58, 0.28);
+    }
+
+    .workshop-process-card::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--terracotta);
+      transform: scaleX(0.35);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .workshop-process-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .workshop-process-number {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #FBE2D6;
+      color: var(--terracotta);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .workshop-process-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.65rem;
+      letter-spacing: 0.01em;
+    }
+
+    .workshop-process-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--warm-gray);
+    }
+
+    @media (max-width: 1024px) {
+      .workshop-process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .workshop-process-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-top: 2.5rem;
+      }
+
+      .workshop-process-card {
+        min-height: 0;
+        padding: 1.4rem;
+      }
+
+      .workshop-process-number {
+        margin-bottom: 1rem;
+      }
+    }
 
     /* ===== STATS ===== */
     .stats-section { background: var(--forest-deep); position: relative; overflow: hidden; }
@@ -1150,7 +1459,7 @@
       <li><a href="#faq">Вопросы</a></li>
       <li><a href="#cta" class="nav-cta">Записаться</a></li>
     </ul>
-<!--    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Меню"><span></span><span></span><span></span></button>-->
+    <!--    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Меню"><span></span><span></span><span></span></button>-->
   </div>
 </nav>
 
@@ -1166,9 +1475,9 @@
   <div class="hero-particles" id="particles"></div>
   <div class="hero-content">
     <div class="hero-text">
-      <div class="hero-badge"><span class="hero-badge-dot"></span> Камерные экспедиции • 5–7 детей • Парки Санкт-Петербурга</div>
-      <h1>Экспедиции, где ребёнок <span>собирает себя</span> по-настоящему</h1>
-      <p class="hero-subtitle">90 минут на природе в малом отряде 5–7 детей: ребёнок исследует, строит, наблюдает, договаривается, получает роли, шевроны и первые следы своего развития.</p>
+      <div class="hero-badge"><span class="hero-badge-dot"></span> Экспедиции • Мастерская • 5–7 детей • Парки Санкт-Петербурга</div>
+      <h1>Пространство, где ребёнок <span>собирает себя</span> по-настоящему</h1>
+      <p class="hero-subtitle">50% — в мастерской, 50% — в мире вокруг. Учимся думать, читать и считать, а на прогулках-экспедициях исследуем природу, город и всё, что происходит прямо сейчас</p>
       <div class="hero-buttons">
         <a href="#cta" class="btn-primary">Записаться на первую прогулку <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         <a href="#method" class="btn-secondary">Посмотреть, как устроен клуб <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
@@ -1188,9 +1497,9 @@
 <section class="modular-section" id="method">
   <div class="section-container">
     <div class="section-header reveal">
-      <div class="section-tag"><span class="section-tag-line"></span>Методика<span class="section-tag-line"></span></div>
+      <div class="section-tag"><span class="section-tag-line"></span>Методика экспедиций<span class="section-tag-line"></span></div>
       <h2 class="section-title">Как конструктор, только <span>в живой природе</span></h2>
-      <p class="section-subtitle">Каждая прогулка — это «деталь» большого пути ребёнка. По одной детали за раз — складывается целая картина развития.</p>
+      <p class="section-subtitle">Каждая прогулка — это «деталь» большого пути ребёнка. По одной детали за раз — складывается целая картина развития</p>
     </div>
     <div class="modular-grid">
       <div class="modular-card reveal reveal-delay-1"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🧭</div><h3>Экспедиция</h3><p>Ребёнок проживает настоящий опыт на природе: исследует, чувствует, удивляется, задаёт вопросы.</p></div>
@@ -1201,13 +1510,91 @@
   </div>
 </section>
 
+<!-- MODULAR: Как конструктор, только в живой природе -->
+<section class="modular-section workshop-section" id="methods">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-tag"><span class="section-tag-line"></span>Методика мастерской<span class="section-tag-line"></span></div>
+      <h2 class="section-title">Мастерская, где идеи <span>превращаются в навыки</span></h2>
+      <p class="section-subtitle">Здесь он не просто получает знания, а учится думать, пробовать и создавать: развивает логику, конструирует, работает над проектами, читает и считает</p>
+    </div>
+    <div class="modular-grid">
+      <div class="modular-card reveal reveal-delay-1"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🧩</div><h3>Логика и мышление</h3><p>Ребёнок учится рассуждать: замечает закономерности, ищет решения, задаёт вопросы и находит свои ответы.</p></div>
+      <div class="modular-card reveal reveal-delay-2"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🏗️</div><h3>Конструирование</h3><p>Ребёнок создаёт и проверяет: придумывает конструкции, экспериментирует, ошибается и пробует снова.</p></div>
+      <div class="modular-card reveal reveal-delay-4"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">🎨</div><h3>Творческие проекты</h3><p>Ребёнок выражает себя: придумывает, создаёт руками, исследует материалы и превращает идеи в настоящие проекты.</p></div>
+      <div class="modular-card reveal reveal-delay-5"><div class="modular-stud"><span></span><span></span><span></span></div><div class="modular-icon">📚</div><h3>Чтение и счёт</h3><p>Ребёнок осваивает базовые навыки: читает, считает, понимает связи и учится применять знания в жизни.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKSHOP PROCESS -->
+<section class="workshop-process-section">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <div class="section-tag"><span class="section-tag-line"></span>Как ребёнок учится<span class="section-tag-line"></span></div>
+      <h2 class="section-title">Как проходит <span>занятие в мастерской</span></h2>
+      <p class="section-subtitle">Не просто слушаем и повторяем. Ребёнок исследует, создаёт, пробует разные решения и учится на собственном опыте.</p>
+    </div>
+
+    <div class="workshop-process-grid">
+      <div class="workshop-process-card reveal reveal-delay-1">
+        <div class="workshop-process-number">01</div>
+        <h3>ИССЛЕДУЮТ</h3>
+        <p>Наблюдают, сравнивают, задают вопросы.</p>
+      </div>
+
+      <!--            <div class="workshop-process-card reveal reveal-delay-2">-->
+      <!--                <div class="workshop-process-number">02</div>-->
+      <!--                <h3>СОЗДАЮТ</h3>-->
+      <!--                <p>Работают с разными материалами и инструментами.</p>-->
+      <!--            </div>-->
+
+      <div class="workshop-process-card reveal reveal-delay-3">
+        <div class="workshop-process-number">03</div>
+        <h3>КОНСТРУИРУЮТ</h3>
+        <p>Собирают модели и проверяют свои идеи.</p>
+      </div>
+
+      <div class="workshop-process-card reveal reveal-delay-4">
+        <div class="workshop-process-number">04</div>
+        <h3>ЭКСПЕРИМЕНТИРУЮТ</h3>
+        <p>Меняют условия и наблюдают результат.</p>
+      </div>
+
+      <div class="workshop-process-card reveal reveal-delay-1">
+        <div class="workshop-process-number">05</div>
+        <h3>ПРИДУМЫВАЮТ</h3>
+        <p>Предлагают собственные варианты решений.</p>
+      </div>
+
+      <div class="workshop-process-card reveal reveal-delay-2">
+        <div class="workshop-process-number">06</div>
+        <h3>ОБСУЖДАЮТ</h3>
+        <p>Объясняют свои идеи и слушают других.</p>
+      </div>
+
+      <!--            <div class="workshop-process-card reveal reveal-delay-3">-->
+      <!--                <div class="workshop-process-number">07</div>-->
+      <!--                <h3>СОТРУДНИЧАЮТ</h3>-->
+      <!--                <p>Работают в парах и небольших командах.</p>-->
+      <!--            </div>-->
+
+      <div class="workshop-process-card reveal reveal-delay-4">
+        <div class="workshop-process-number">08</div>
+        <h3>ПРОБУЮТ СЕБЯ</h3>
+        <p>Берут инициативу, выбирают способ действия и видят результат своих решений.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- STATS -->
 <section class="stats-section">
   <div class="section-container">
     <div class="stats-grid">
       <div class="stat-item reveal"><div class="stat-number"><span class="counter" data-target="7">0</span></div><div class="stat-label">направлений развития</div></div>
       <div class="stat-item reveal reveal-delay-1"><div class="stat-number"><span class="counter" data-target="27">0</span></div><div class="stat-label">компетенций наблюдения</div></div>
-      <div class="stat-item reveal reveal-delay-2"><div class="stat-number"><span class="counter" data-target="90">0</span></div><div class="stat-label">минут экспедиции</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-number"><span class="counter" data-target="90">0</span></div><div class="stat-label">минут занятия</div></div>
       <div class="stat-item reveal reveal-delay-3"><div class="stat-number"><span class="counter" data-target="5">0</span>–<span class="counter" data-target="7">0</span></div><div class="stat-label">детей в отряде</div></div>
     </div>
   </div>
